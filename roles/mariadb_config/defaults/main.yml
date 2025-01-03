@@ -1,0 +1,14 @@
+---
+mariadb_config_default:
+  server_id: 0
+  gtid_domain_id: 0
+  gtid_strict_mode: true
+  skip_name_resolve: true
+  wait_timeout: 60
+  log_bin: true
+  log-basename: mariadb
+  binlog_format: ROW
+  binlog_expire_logs_seconds: 604800
+  max_binlog_size: 16M
+mariadb_config_override: {}
+...

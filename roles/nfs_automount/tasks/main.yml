@@ -1,0 +1,31 @@
+---
+- name: Create mount directory
+  ansible.builtin.file:
+    path: '{{ nfs_automount_mount }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configure nfs mount
+  ansible.builtin.template:
+    src: nfs.mount
+    dest: /etc/systemd/system/{{ nfs_automount_name }}.mount
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure nfs automount
+  ansible.builtin.template:
+    src: nfs.automount
+    dest: /etc/systemd/system/{{ nfs_automount_name }}.automount
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start nfs automount
+  ansible.builtin.systemd_service:
+    name: '{{ nfs_automount_name }}.automount'
+    enabled: true
+    state: started
+...

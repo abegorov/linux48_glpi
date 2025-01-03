@@ -1,0 +1,4 @@
+---
+ssh_key_dir: secrets
+ssh_key_users: []
+...

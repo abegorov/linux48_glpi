@@ -1,0 +1,34 @@
+---
+- name: Common provision
+  hosts: all
+  become: true
+  gather_facts: false
+  roles: []
+
+- name: Backup provision
+  hosts: [backup]
+  become: true
+  gather_facts: false
+  roles:
+    - ssh_key
+    - ssh_known_hosts
+
+- name: DB provision
+  hosts: [mariadb]
+  become: true
+  gather_facts: false
+  roles:
+    - mariadb_install
+    - ssh_authorized_keys
+    - mariadb_status
+    - mariadb_restore
+    - mariadb_config
+    - mariadb_users
+    - mariadb_replica
+
+- name: NFS server provision
+  hosts: [nfs]
+  become: true
+  gather_facts: false
+  roles:
+    - nfs_server

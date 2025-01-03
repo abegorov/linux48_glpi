@@ -1,0 +1,18 @@
+---
+- name: Update MariaDB configuration
+  ansible.builtin.template:
+    src: server.cnf
+    dest: /etc/my.cnf.d/server.cnf
+    lstrip_blocks: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart service mariadb
+
+- name: Enable and start service mariadb
+  ansible.builtin.systemd_service:
+    name: mariadb.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+...

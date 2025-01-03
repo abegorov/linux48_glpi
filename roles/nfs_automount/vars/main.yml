@@ -1,0 +1,6 @@
+---
+nfs_automount_name: '{{ nfs_automount_mount |
+  ansible.builtin.regex_replace("^/+", "") |
+  ansible.builtin.regex_replace("/+$", "") |
+  replace("/", "-") }}'
+...

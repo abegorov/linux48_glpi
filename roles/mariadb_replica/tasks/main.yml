@@ -1,0 +1,43 @@
+---
+- name: Check replica status using port 3308
+  community.mysql.mysql_replication:
+    mode: getreplica
+    login_unix_socket: '{{ mariadb_replica_socket }}'
+    login_user: '{{ mariadb_replica_login }}'
+    login_password: '{{ mariadb_replica_password }}'
+  when: mariadb_replica_params
+  register: mariadb_replica_status
+
+- name: Change primary server
+  vars:
+    repl: '{{ mariadb_replica_default |
+      ansible.builtin.combine(mariadb_replica_params) }}'
+  community.mysql.mysql_replication:
+    login_unix_socket: '{{ mariadb_replica_socket }}'
+    login_user: '{{ mariadb_replica_login }}'
+    login_password: '{{ mariadb_replica_password }}'
+    mode: changeprimary
+    connection_name: '{{ repl.connection_name | default(omit) }}'
+    primary_host: '{{ repl.primary_host | default(omit) }}'
+    primary_port: '{{ repl.primary_port | default(omit) }}'
+    primary_user: '{{ repl.primary_user | default(omit) }}'
+    primary_password: '{{ repl.primary_password | default(omit) }}'
+    primary_use_gtid: '{{ repl.primary_use_gtid | default(omit) }}'
+    primary_ssl: '{{ repl.primary_ssl | default(omit) }}'
+  when: mariadb_replica_params and not mariadb_replica_status.Is_Replica
+  no_log: '{{ not debug }}'
+
+- name: Run start replica and fail the task on errors
+  vars:
+    repl: '{{ mariadb_replica_default |
+      ansible.builtin.combine(mariadb_replica_params) }}'
+  community.mysql.mysql_replication:
+    login_unix_socket: '{{ mariadb_replica_socket }}'
+    login_user: '{{ mariadb_replica_login }}'
+    login_password: '{{ mariadb_replica_password }}'
+    mode: startreplica
+    fail_on_error: true
+  when: mariadb_replica_params and
+    mariadb_replica_status.Slave_IO_Running | default('No') != 'Yes'
+  no_log: '{{ not debug }}'
+...

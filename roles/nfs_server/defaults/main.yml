@@ -1,0 +1,27 @@
+---
+nfs_server_rootdir: /export
+nfs_server_subdirs: {}
+nfs_server_exports_content:
+nfs_server_general: {}
+nfs_server_nfsrahead: {}
+nfs_server_exports:
+  rootdir: '{{ nfs_server_rootdir }}'
+nfs_server_exportfs: {}
+nfs_server_gssd: {}
+nfs_server_lockd: {}
+nfs_server_exportd: {}
+nfs_server_mountd: {}
+nfs_server_nfsdcld: {}
+nfs_server_nfsdcltrack: {}
+nfs_server_nfsd:
+  udp: false
+  tcp: true
+  vers3: false
+  vers4: true
+  vers4.0: false
+  vers4.1: false
+  vers4.2: true
+  rdma: false
+nfs_server_statd: {}
+nfs_server_sm_notify: {}
+...

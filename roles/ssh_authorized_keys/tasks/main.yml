@@ -1,0 +1,13 @@
+---
+- name: Update ssh authorized keys
+  ansible.posix.authorized_key:
+    user: '{{ item.key }}'
+    key: |
+      {% for keyfile in item.value %}
+      {{ lookup('ansible.builtin.file', keyfile) }}
+      {% endfor %}
+    exclusive: true
+  loop: '{{ ssh_authorized_keys_users_files | ansible.builtin.dict2items }}'
+  loop_control:
+    label: '{{ item.key }}'
+...

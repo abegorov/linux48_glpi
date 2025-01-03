@@ -1,0 +1,11 @@
+---
+mariadb_replica_socket: /var/lib/mysql/mysql.sock
+mariadb_replica_login: root
+mariadb_replica_password: ''
+
+mariadb_replica_default:
+  primary_port: 3306
+  primary_use_gtid: current_pos
+  primary_ssl: true
+mariadb_replica_params: {}
+...

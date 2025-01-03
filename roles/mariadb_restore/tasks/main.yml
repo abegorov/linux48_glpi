@@ -1,0 +1,5 @@
+---
+- name: Run MariaDB restore
+  ansible.builtin.include_tasks: restore.yml
+  when: mariadb_restore_run
+...

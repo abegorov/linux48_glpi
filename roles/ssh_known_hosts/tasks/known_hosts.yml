@@ -1,0 +1,12 @@
+---
+- name: Update known_hosts records
+  become: true
+  become_user: '{{ user }}'
+  ansible.builtin.known_hosts:
+    name: '{{ item.item }}'
+    key: '{{ item.stdout }}'
+    state: present
+  loop: '{{ ssh_known_hosts_keys.results }}'
+  loop_control:
+    label: '{{ item.item }}'
+...

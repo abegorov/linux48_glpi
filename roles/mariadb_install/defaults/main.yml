@@ -1,0 +1,5 @@
+---
+mariadb_install_repo_setup_checksum: >-
+  sha256:ceaa5bd124c4d10a892c384e201bb6e0910d370ebce235306d2e4b860ed36560
+mariadb_install_version: 'mariadb-11.6'
+...

@@ -1,0 +1,14 @@
+---
+- name: Scan hosts key
+  ansible.builtin.command:
+    cmd: /usr/bin/ssh-keyscan '{{ item }}'
+  changed_when: false
+  loop: '{{ ssh_known_hosts_list }}'
+  register: ssh_known_hosts_keys
+
+- name: Include known_hosts tasks
+  ansible.builtin.include_tasks: known_hosts.yml
+  loop: '{{ ssh_known_hosts_users }}'
+  loop_control:
+    loop_var: user
+...

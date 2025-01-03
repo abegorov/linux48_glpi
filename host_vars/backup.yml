@@ -1,0 +1,9 @@
+---
+ip: '192.168.57.10'
+
+ssh_key_users: [root]
+ssh_known_hosts_list:
+  - '{{ hostvars["primary"].ip }}'
+  - '{{ hostvars["replica"].ip }}'
+ssh_known_hosts_users: [root]
+...

@@ -1,0 +1,43 @@
+---
+- name: Remove MariaDB database
+  ansible.builtin.file:
+    path: '{{ mariadb_restore_dir }}'
+    state: absent
+
+- name: Create MariaDB database directory
+  ansible.builtin.file:
+    path: '{{ mariadb_restore_dir }}'
+    owner: mysql
+    group: mysql
+    mode: '0755'
+    state: directory
+
+- name: Restore MariaDB database
+  delegate_to: '{{ mariadb_restore_delegate_to }}'
+  vars:
+    srcuser: '{{ mariadb_restore_src_user | ansible.builtin.quote }}'
+    srchost: '{{ mariadb_restore_src_host | ansible.builtin.quote }}'
+    dstuser: '{{ mariadb_restore_dst_user | ansible.builtin.quote }}'
+    dsthost: '{{ mariadb_restore_dst_host | ansible.builtin.quote }}'
+    dstdir: '{{ mariadb_restore_dir | ansible.builtin.quote }}'
+    rstcmd: 'set -o pipefail && zstd -d - -c | mbstream -x -C {{ dstdir }}'
+  ansible.builtin.shell: >
+    set -o pipefail &&
+    ssh {{ srcuser }}@{{ srchost }}
+    'set -o pipefail && mariabackup --backup --stream=xbstream | zstd - -c'
+    | ssh {{ dstuser }}@{{ dsthost }} {{ rstcmd | ansible.builtin.quote }}
+  changed_when: true
+
+- name: Prepare MariaDB database
+  ansible.builtin.command: mariabackup --prepare --target-dir {{
+    mariadb_restore_dir | ansible.builtin.quote }}
+  changed_when: true
+
+- name: Update MariaDB database owner
+  ansible.builtin.file:
+    path: '{{ mariadb_restore_dir }}'
+    owner: mysql
+    group: mysql
+    recurse: true
+    state: directory
+...

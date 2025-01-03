@@ -1,0 +1,20 @@
+---
+- name: Generate ssh key
+  ansible.builtin.user:
+    name: '{{ item }}'
+    generate_ssh_key: true
+    ssh_key_type: ed25519
+  loop: '{{ ssh_key_users }}'
+  register: ssh_key_result
+
+- name: Save ssh key
+  delegate_to: localhost
+  become: false
+  ansible.builtin.copy:
+    content: '{{ item.ssh_public_key }}'
+    dest: '{{ ssh_key_dir }}/{{ item.item }}@{{ inventory_hostname }}.pub'
+    mode: '0644'
+  loop: '{{ ssh_key_result.results }}'
+  loop_control:
+    label: '{{ item.item }}'
+...

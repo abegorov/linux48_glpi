@@ -1,0 +1,35 @@
+---
+- name: Update MariaDB repo setup script
+  ansible.builtin.get_url:
+    url: https://r.mariadb.com/downloads/mariadb_repo_setup
+    dest: /usr/local/sbin/mariadb_repo_setup
+    owner: root
+    group: root
+    mode: '0755'
+    checksum: '{{ mariadb_install_repo_setup_checksum }}'
+
+- name: Setup MariaDB repo
+  ansible.builtin.command: >-
+    /usr/local/sbin/mariadb_repo_setup
+    --mariadb-server-version='{{ mariadb_install_version }}'
+  args:
+    creates: /etc/yum.repos.d/mariadb.repo
+
+- name: Install MariaDB and tools
+  ansible.builtin.dnf:
+    name:
+      - MariaDB-server
+      - MariaDB-client
+      - MariaDB-backup
+      - python3-PyMySQL
+      - zstd
+    state: present
+
+- name: Enable mysql service in firewalld
+  ansible.posix.firewalld:
+    service: mysql
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+...

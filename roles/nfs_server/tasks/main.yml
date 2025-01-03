@@ -1,0 +1,52 @@
+---
+- name: Configure nfs
+  ansible.builtin.template:
+    src: nfs.conf
+    dest: /etc/nfs.conf
+    lstrip_blocks: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart service nfs-server
+
+- name: Create root directory
+  ansible.builtin.file:
+    path: '{{ nfs_server_rootdir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create subdirectories
+  ansible.builtin.file:
+    path: '{{ nfs_server_rootdir }}/{{ item.key }}'
+    state: directory
+    owner: '{{ item.value.owner | default("nobody") }}'
+    group: '{{ item.value.group | default("nobody") }}'
+    mode: '{{ item.value.mode | default("0755") }}'
+  loop: '{{ nfs_server_subdirs | ansible.builtin.dict2items }}'
+  loop_control:
+    label: '{{ item.key }}'
+
+- name: Update nfs exports
+  ansible.builtin.template:
+    src: exports
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reexport nfs
+
+- name: Enable and start service nfs-server
+  ansible.builtin.systemd:
+    name: nfs-server.service
+    enabled: true
+    state: started
+
+- name: Enable nfs service in firewalld
+  ansible.posix.firewalld:
+    service: nfs
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true

@@ -1,0 +1,22 @@
+#
+# These groups are read by MariaDB server.
+# Use it for options that only the server (but not clients) should see
+#
+
+# This group is only read by MariaDB servers, not by MySQL.
+# If you use the same .cnf file for MySQL and MariaDB,
+# you can put MariaDB-only options here
+[mariadb]
+{%
+  set config = mariadb_config_default |
+    ansible.builtin.combine(mariadb_config_override)
+%}
+{% for key, value in config.items() %}
+  {% if value is boolean %}
+    {{- key }} = {{ '1' if value else '0' }}
+  {% elif value is number %}
+    {{- key }} = {{ value }}
+  {% else %}
+    {{- key }} = "{{ value }}"
+  {% endif %}
+{% endfor %}

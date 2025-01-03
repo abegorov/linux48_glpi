@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount share
+Before=remote-fs.target
+
+[Mount]
+What={{ nfs_automount_host }}:{{ nfs_automount_path }}
+Where={{ nfs_automount_mount }}
+Type=nfs
+TimeoutSec=30

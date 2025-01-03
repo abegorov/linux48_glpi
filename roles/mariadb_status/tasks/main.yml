@@ -1,0 +1,6 @@
+---
+- name: Get mariadb service status
+  ansible.builtin.systemd_service:
+    name: mariadb.service
+  register: mariadb_status
+...

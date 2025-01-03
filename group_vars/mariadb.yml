@@ -1,0 +1,13 @@
+---
+mariadb_replication_user: replication
+mariadb_replication_password: '{{ lookup("ansible.builtin.password",
+  "secrets/mariadb_replication_password.txt", length=26) }}'
+mariadb_exporter_user: exporter
+mariadb_exporter_password: '{{ lookup("ansible.builtin.password",
+  "secrets/mariadb_exporter_password.txt", length=26) }}'
+
+ssh_authorized_keys_users_files:
+  root: ['secrets/root@backup.pub']
+
+mariadb_restore_delegate_to: backup
+...
