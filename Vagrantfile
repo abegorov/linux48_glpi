@@ -13,14 +13,21 @@ DEFAULT_MACHINE = {
 }
 
 MACHINES = {
-  :backup  => { :intnets => { :lan => { ip: '192.168.57.10' } } },
-  :primary => { :intnets => { :lan => { ip: '192.168.57.11' } } },
-  :replica => { :intnets => { :lan => { ip: '192.168.57.12' } } },
-  :nfs     => { :intnets => { :lan => { ip: '192.168.57.13' } } },
+  :backup   => { :intnets => { :lan => { ip: '192.168.57.10' } } },
+  :primary  => { :intnets => { :lan => { ip: '192.168.57.11' } } },
+  :replica  => { :intnets => { :lan => { ip: '192.168.57.12' } } },
+  :nfs      => { :intnets => { :lan => { ip: '192.168.57.13' } } },
+  :backend1 => { :intnets => { :lan => { ip: '192.168.57.14' } } },
+  :backend2 => { :intnets => { :lan => { ip: '192.168.57.15' } } },
+  :frontend => {
+    :intnets => { :lan => { ip: '192.168.57.18' } },
+    :networks => { :private_network => { ip: '192.168.56.18' } },
+  },
 }
 
 ANSIBLE_GROUPS = {
-  'mariadb' => ["primary", "replica"]
+  'mariadb' => ['primary', 'replica'],
+  'backend' => ['backend1', 'backend2'],
 }
 
 ENV['ANSIBLE_STDOUT_CALLBACK'] = 'yaml'

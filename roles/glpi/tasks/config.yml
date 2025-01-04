@@ -1,0 +1,17 @@
+---
+- name: Configure config directory path
+  ansible.builtin.template:
+    src: downstream.php
+    dest: '{{ glpi_dir }}/inc/downstream.php'
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure var and log directory path
+  ansible.builtin.template:
+    src: local_define.php
+    dest: '{{ glpi_config_dir }}/local_define.php'
+    owner: root
+    group: root
+    mode: '0644'
+...

@@ -5,8 +5,8 @@ nfs_server_subdirs:
   glpi: {}
 nfs_exports_opts: rw,sync,insecure,no_subtree_check,all_squash
 nfs_exports_clients: >
-  {{ hostvars["primary"].ip }}
-  {{ hostvars["replica"].ip }}
+  {{ hostvars["backend1"].ip }}
+  {{ hostvars["backend2"].ip }}
 nfs_server_exports_content: |
   /glpi -{{ nfs_exports_opts }} {{ nfs_exports_clients }}
 ...

@@ -1,0 +1,35 @@
+---
+- name: Set required SELinux boolead flags
+  ansible.posix.seboolean:
+    name: '{{ item }}'
+    state: true
+    persistent: true
+  loop:
+    - httpd_can_network_connect
+    - httpd_can_network_connect_db
+    - httpd_can_sendmail
+
+- name: Apply new SELinux file context to GLPI directory
+  ansible.builtin.command: restorecon -irv {{ glpi_dir |
+    ansible.builtin.quote }}
+  register: glpi_dir_restorecon
+  changed_when: glpi_dir_restorecon.stdout
+
+- name: Apply new SELinux file context to GLPI config directory
+  ansible.builtin.command: restorecon -irv {{ glpi_config_dir |
+    ansible.builtin.quote }}
+  register: glpi_config_dir_restorecon
+  changed_when: glpi_config_dir_restorecon.stdout
+
+- name: Apply new SELinux file context to GLPI var directory
+  ansible.builtin.command: restorecon -irv {{ glpi_var_dir |
+    ansible.builtin.quote }}
+  register: glpi_var_dir_restorecon
+  changed_when: glpi_var_dir_restorecon.stdout
+
+- name: Apply new SELinux file context to GLPI log directory
+  ansible.builtin.command: restorecon -irv {{ glpi_log_dir |
+    ansible.builtin.quote }}
+  register: glpi_log_dir_restorecon
+  changed_when: glpi_log_dir_restorecon.stdout
+...

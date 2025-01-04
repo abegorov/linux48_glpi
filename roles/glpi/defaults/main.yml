@@ -1,0 +1,27 @@
+---
+glpi_dir: /usr/share/glpi
+glpi_cache_dir: /var/cache/glpi
+glpi_config_dir: /etc/glpi
+glpi_log_dir: /var/log/glpi
+glpi_var_dir: /var/lib/glpi
+
+glpi_log_owner: angie
+glpi_log_group: '{{ glpi_log_owner }}'
+glpi_var_owner: '{{ glpi_log_owner }}'
+glpi_var_group: '{{ glpi_log_group }}'
+
+glpi_remi_name: remi-release-9.rpm
+glpi_remi_url: https://rpms.remirepo.net/enterprise/{{ glpi_remi_name }}
+glpi_remi_checksum: >-
+  sha256:ca0a40fcced1e616c35b34dcaa66ef8b93f231d20a3d14e1d3c8a878dc725936
+
+glpi_php_fpm_user: '{{ glpi_var_owner }}'
+glpi_php_fpm_group: '{{ glpi_var_group }}'
+
+glpi_version: '10.0.17'
+glpi_archive_name: glpi-{{ glpi_version }}.tgz
+glpi_download_url: https://github.com/glpi-project/glpi/releases/download/{{
+  glpi_version }}/{{ glpi_archive_name }}
+glpi_download_checksum: >-
+  sha256:4cfc485ad2b1ba16e38d2725a13375bda784abf1533a79971711feed0a7f5e11
+...

@@ -6,4 +6,5 @@ Before=remote-fs.target
 What={{ nfs_automount_host }}:{{ nfs_automount_path }}
 Where={{ nfs_automount_mount }}
 Type=nfs
+Options={{ nfs_automount_options }}
 TimeoutSec=30

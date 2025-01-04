@@ -1,0 +1,16 @@
+---
+- name: Install PHP and modules
+  ansible.builtin.import_tasks: php.yml
+
+- name: Create GLPI directories
+  ansible.builtin.import_tasks: dirs.yml
+
+- name: Unarchive GLPI
+  ansible.builtin.import_tasks: unarchive.yml
+
+- name: Configure GLPI
+  ansible.builtin.import_tasks: config.yml
+
+- name: Configure SELinux for GLPI
+  ansible.builtin.import_tasks: selinux.yml
+...

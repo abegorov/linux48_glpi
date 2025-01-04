@@ -1,4 +1,9 @@
 ---
+- name: Check if mount directory exists
+  ansible.builtin.stat:
+    path: '{{ nfs_automount_mount }}'
+  register: nfs_automount_mount_stat
+
 - name: Create mount directory
   ansible.builtin.file:
     path: '{{ nfs_automount_mount }}'
@@ -6,6 +11,7 @@
     owner: root
     group: root
     mode: '0755'
+  when: not nfs_automount_mount_stat.stat.isdir
 
 - name: Configure nfs mount
   ansible.builtin.template:
@@ -14,6 +20,7 @@
     owner: root
     group: root
     mode: '0644'
+  register: nfs_automount_template_mount
 
 - name: Configure nfs automount
   ansible.builtin.template:
@@ -22,10 +29,19 @@
     owner: root
     group: root
     mode: '0644'
+  register: nfs_automount_template_automount
 
 - name: Enable and start nfs automount
   ansible.builtin.systemd_service:
     name: '{{ nfs_automount_name }}.automount'
     enabled: true
     state: started
+
+- name: Restart nfs automount
+  ansible.builtin.systemd_service:
+    name: '{{ nfs_automount_name }}.automount'
+    daemon_reload: true
+    state: restarted
+  when: nfs_automount_template_mount.changed or
+    nfs_automount_template_automount.changed
 ...

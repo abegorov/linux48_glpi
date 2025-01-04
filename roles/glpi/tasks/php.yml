@@ -1,0 +1,61 @@
+---
+- name: Download remi autoconfiguration package
+  ansible.builtin.get_url:
+    url: '{{ glpi_remi_url }}'
+    dest: '{{ glpi_cache_dir }}/{{ glpi_remi_name }}'
+    checksum: '{{ glpi_remi_checksum }}'
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install php remi repository
+  ansible.builtin.dnf:
+    name: '{{ glpi_cache_dir }}/{{ glpi_remi_name }}'
+    disable_gpg_check: true
+    state: present
+
+- name: Install php and required php modules
+  ansible.builtin.dnf:
+    name:
+      - php83-php
+      - php83-php-common
+      - php83-php-gd
+      - php83-php-intl
+      - php83-php-ldap
+      - php83-php-mysqlnd
+      - php83-php-opcache
+      - php83-php-pecl-zip
+      - php83-php-xml
+    state: present
+
+- name: Configure php session module
+  ansible.builtin.template:
+    src: php-session.ini
+    dest: /etc/opt/remi/php83/php.d/20-session.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create angie.service.d directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/angie.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configure angie service dependency
+  ansible.builtin.template:
+    src: php83-php-fpm.conf
+    dest: /etc/systemd/system/angie.service.d/php83-php-fpm.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start service php83-php-fpm
+  ansible.builtin.systemd_service:
+    name: php83-php-fpm.service
+    daemon_reload: true
+    enabled: true
+    state: started
+...

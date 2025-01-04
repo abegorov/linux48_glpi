@@ -23,6 +23,7 @@
     - mariadb_status
     - mariadb_restore
     - mariadb_config
+    - mariadb_databases
     - mariadb_users
     - mariadb_replica
 
@@ -32,3 +33,18 @@
   gather_facts: false
   roles:
     - nfs_server
+
+- name: Frontend and backed provision
+  hosts: [frontend, backend]
+  become: true
+  gather_facts: false
+  roles:
+    - angie
+
+- name: Backend provision
+  hosts: [backend]
+  become: true
+  gather_facts: false
+  roles:
+    - nfs_automount
+    - glpi

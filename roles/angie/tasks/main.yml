@@ -1,0 +1,58 @@
+---
+- name: Add angie repo
+  ansible.builtin.yum_repository:
+    name: angie
+    description: Angie repo
+    baseurl: https://download.angie.software/angie/rocky/$releasever/
+    gpgcheck: true
+    enabled: true
+    gpgkey: https://angie.software/keys/angie-signing.gpg.asc
+    state: present
+
+- name: Install angie
+  ansible.builtin.dnf:
+    name:
+      - angie
+      - angie-module-vts
+    state: present
+
+- name: Make new dir for certs
+  ansible.builtin.file:
+    path: /etc/angie/certs
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Configure angie
+  ansible.builtin.template:
+    src: '{{ angie_conf_template }}'
+    dest: /etc/angie/angie.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload service angie
+
+- name: Enable and start service angie
+  ansible.builtin.systemd_service:
+    name: angie.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+
+- name: Enable http service in firewalld
+  ansible.posix.firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+
+- name: Enable https service in firewalld
+  ansible.posix.firewalld:
+    service: https
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+...

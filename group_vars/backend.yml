@@ -1,0 +1,10 @@
+---
+glpi_var_dir: /var/lib/glpi
+glpi_var_owner: '{{ omit }}'
+glpi_var_group: '{{ omit }}'
+
+nfs_automount_mount: '{{ glpi_var_dir }}'
+nfs_automount_host: '{{ hostvars["nfs"].ip }}'
+nfs_automount_path: /glpi
+nfs_automount_options: context="system_u:object_r:httpd_var_lib_t:s0"
+...
