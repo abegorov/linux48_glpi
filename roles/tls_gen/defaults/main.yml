@@ -1,0 +1,15 @@
+---
+tls_gen_dir: secrets/certs
+tls_gen_ca_cn: LOCAL ROOT CA
+tls_gen_ca_keyfile: CA.key
+tls_gen_ca_certfile: CA.crt
+
+tls_gen_cert_domain: local
+tls_gen_cert_cn: '{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
+tls_gen_cert_san:
+  - 'DNS:{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
+  - 'IP:127.0.0.1'
+tls_gen_cert_keyfile: '{{ inventory_hostname }}.key'
+tls_gen_cert_certfile: '{{ inventory_hostname }}.crt'
+tls_gen_cert_not_after: '+365d'
+...

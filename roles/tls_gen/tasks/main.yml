@@ -1,0 +1,74 @@
+---
+- name: Create certificates directory
+  delegate_to: localhost
+  become: false
+  ansible.builtin.file:
+    path: '{{ tls_gen_dir }}'
+    state: directory
+    mode: '0755'
+
+- name: Create private key for CA
+  delegate_to: localhost
+  become: false
+  community.crypto.openssl_privatekey:
+    path: '{{ tls_gen_dir }}/{{ tls_gen_ca_keyfile }}'
+  no_log: '{{ not debug }}'
+
+- name: Create certificate signing request (CSR) for CA certificate
+  delegate_to: localhost
+  become: false
+  community.crypto.openssl_csr_pipe:
+    common_name: '{{ tls_gen_ca_cn }}'
+    use_common_name_for_san: false
+    basic_constraints: ['CA:TRUE']
+    basic_constraints_critical: true
+    key_usage: [keyCertSign]
+    key_usage_critical: true
+    privatekey_path: '{{ tls_gen_dir }}/{{ tls_gen_ca_keyfile }}'
+  no_log: '{{ not debug }}'
+  changed_when: false
+  register: tls_gen_ca_csr
+
+- name: Create self-signed CA certificate from CSR
+  delegate_to: localhost
+  become: false
+  community.crypto.x509_certificate:
+    path: '{{ tls_gen_dir }}/{{ tls_gen_ca_certfile }}'
+    csr_content: "{{ tls_gen_ca_csr.csr }}"
+    privatekey_path: '{{ tls_gen_dir }}/{{ tls_gen_ca_keyfile }}'
+    provider: selfsigned
+    selfsigned_not_after: '+10957d'
+  no_log: '{{ not debug }}'
+
+- name: Create host private key
+  delegate_to: localhost
+  become: false
+  community.crypto.openssl_privatekey:
+    path: '{{ tls_gen_dir }}/{{ tls_gen_cert_keyfile }}'
+  no_log: '{{ not debug }}'
+
+- name: Create host certificate signing request (CSR)
+  delegate_to: localhost
+  become: false
+  community.crypto.openssl_csr_pipe:
+    common_name: '{{ tls_gen_cert_cn }}'
+    subject_alt_name: '{{ tls_gen_cert_san }}'
+    use_common_name_for_san: false
+    privatekey_path: '{{ tls_gen_dir }}/{{ tls_gen_cert_keyfile }}'
+  no_log: '{{ not debug }}'
+  changed_when: false
+  register: tls_gen_cert_csr
+
+- name: Create host certificate from CSR
+  delegate_to: localhost
+  become: false
+  community.crypto.x509_certificate:
+    path: '{{ tls_gen_dir }}/{{ tls_gen_cert_certfile }}'
+    csr_content: '{{ tls_gen_cert_csr.csr }}'
+    provider: ownca
+    ownca_path: '{{ tls_gen_dir }}/{{ tls_gen_ca_certfile }}'
+    ownca_privatekey_path: '{{ tls_gen_dir }}/{{ tls_gen_ca_keyfile }}'
+    ownca_not_after: '{{ tls_gen_cert_not_after }}'
+    ownca_not_before: '-1d'
+  no_log: '{{ not debug }}'
+...
