@@ -3,7 +3,8 @@
   hosts: all
   become: true
   gather_facts: false
-  roles: []
+  roles:
+    - tls_gen
 
 - name: Backup provision
   hosts: [backup]
