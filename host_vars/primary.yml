@@ -17,8 +17,6 @@ mariadb_users_list:
     password: '{{ glpi_db_password }}'
     priv:
       'glpi.*': ALL
-    resource_limits:
-      MAX_USER_CONNECTIONS: 3
   - name: '{{ mariadb_exporter_user }}'
     host: localhost
     password: '{{ mariadb_exporter_password }}'

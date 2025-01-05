@@ -1,7 +1,38 @@
 ---
 ansible_python_interpreter: /usr/bin/python3
-debug: true
+debug: false
 
+firewalld_zones:
+  public:
+    add_services:
+    remove_services: [dhcpv6-client, cockpit]
+
+tls_gen_cert_domain: otus.abegorov.ru
+tls_gen_cert_san:
+  - 'DNS:{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
+  - 'DNS:localhost'
+  - 'IP:{{ ip }}'
+  - 'IP:127.0.0.1'
+tls_key: '{{ lookup("ansible.builtin.file", "secrets/certs/" +
+  inventory_hostname + ".key") }}'
+tls_cert: |
+  {{
+    lookup(
+      "ansible.builtin.file", "secrets/certs/" + inventory_hostname + ".crt"
+    )
+  }}
+  {{ lookup("ansible.builtin.file", "secrets/certs/CA.crt") }}
+
+angie_certs:
+  - name: '{{ inventory_hostname }}'
+    key: '{{ tls_key }}'
+    cert: '{{ tls_cert }}'
+
+glpi_server_name: glpi.otus.abegorov.ru
+
+glpi_uid: 60000
+glpi_gid: 60000
+glpi_db_host: '{{ hostvars["primary"].ip }}'
 glpi_db_user: glpi
 glpi_db_password: '{{ lookup("ansible.builtin.password",
   "secrets/mariadb_glpi_password.txt", length=26) }}'

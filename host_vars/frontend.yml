@@ -1,4 +1,18 @@
 ---
 ip: '192.168.57.18'
 ip_external: '192.168.56.18'
+
+angie_sites: [frontend]
+angie_frontend_upstreams: '{{ hostvars | ansible.builtin.dict2items |
+  selectattr("key", "in", groups["backend"]) | map(attribute="value") |
+  map(attribute="ip") }}'
+angie_frontend_server_name: '{{ glpi_server_name }}'
+
+tls_gen_cert_san:
+  - 'DNS:{{ glpi_server_name }}'
+  - 'DNS:{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
+  - 'DNS:localhost'
+  - 'IP:{{ ip }}'
+  - 'IP:{{ ip_external }}'
+  - 'IP:127.0.0.1'
 ...

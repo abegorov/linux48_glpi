@@ -2,8 +2,11 @@
 ip: '192.168.57.13'
 
 nfs_server_subdirs:
-  glpi: {}
-nfs_exports_opts: rw,sync,insecure,no_subtree_check,all_squash
+  glpi:
+    owner: '{{ glpi_uid }}'
+    group: '{{ glpi_gid }}'
+    mode: '0755'
+nfs_exports_opts: rw,sync,insecure,no_subtree_check,no_root_squash
 nfs_exports_clients: >
   {{ hostvars["backend1"].ip }}
   {{ hostvars["backend2"].ip }}
