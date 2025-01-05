@@ -1,0 +1,66 @@
+---
+- name: Configure database connection
+  ansible.builtin.template:
+    src: config_db.php
+    dest: '{{ glpi_config_dir }}/config_db.php'
+    owner: glpi
+    group: glpi
+    mode: '0400'
+  no_log: '{{ not debug }}'
+
+- name: Check database schema
+  become: true
+  become_user: glpi
+  run_once: true
+  ansible.builtin.command:
+    cmd: php bin/console -qn db:check_schema_integrity
+    chdir: '{{ glpi_dir }}'
+  changed_when: false
+  register: glpi_check_database_schema
+  failed_when: glpi_check_database_schema.rc not in [0, 4]
+
+- name: Touch glpicrypt.key
+  ansible.builtin.copy:
+    content: ''
+    dest: '{{ glpi_config_dir }}/glpicrypt.key'
+    force: false
+    owner: glpi
+    group: glpi
+    mode: '0600'
+
+- name: Initialize database
+  become: true
+  become_user: glpi
+  run_once: true
+  ansible.builtin.shell: |
+    set -e
+    set -o pipefail
+    php bin/console -qn db:install > /dev/null
+    cat '{{ glpi_config_dir }}/glpicrypt.key' | base64
+  args:
+    chdir: '{{ glpi_dir }}'
+  changed_when: true
+  when: glpi_check_database_schema.rc > 0
+  register: glpi_crypt_key
+
+- name: Save GLPI crypt key file
+  become: false
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.copy:
+    content: '{{ glpi_crypt_key.stdout }}'
+    dest: '{{ glpi_crypt_key_file }}'
+    mode: '0600'
+  when: glpi_crypt_key.changed  # noqa: no-handler
+  no_log: '{{ not debug }}'
+
+- name: Update glpicrypt.key
+  ansible.builtin.copy:
+    content: '{{ lookup("ansible.builtin.file", glpi_crypt_key_file) |
+      ansible.builtin.b64decode }}'
+    dest: '{{ glpi_config_dir }}/glpicrypt.key'
+    owner: glpi
+    group: glpi
+    mode: '0600'
+  no_log: '{{ not debug }}'
+...

@@ -14,4 +14,7 @@
     owner: root
     group: root
     mode: '0644'
+
+- name: Create database
+  ansible.builtin.include_tasks: database.yml
 ...

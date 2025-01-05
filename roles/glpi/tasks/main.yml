@@ -1,4 +1,7 @@
 ---
+- name: Create glpi user and group
+  ansible.builtin.import_tasks: user.yml
+
 - name: Install PHP and modules
   ansible.builtin.import_tasks: php.yml
 
@@ -13,4 +16,12 @@
 
 - name: Configure SELinux for GLPI
   ansible.builtin.import_tasks: selinux.yml
+
+- name: Configure GLPI service
+  ansible.builtin.import_tasks: service.yml
+
+- name: Remove install directory
+  ansible.builtin.file:
+    path: '{{ glpi_dir }}/install/install.php'
+    state: absent
 ...
