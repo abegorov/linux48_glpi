@@ -11,7 +11,7 @@
     owner: root
     group: root
     mode: '0755'
-  when: not nfs_automount_mount_stat.stat.isdir
+  when: not nfs_automount_mount_stat.stat.exists
 
 - name: Configure nfs mount
   ansible.builtin.template:
