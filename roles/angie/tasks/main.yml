@@ -24,13 +24,52 @@
     group: root
     mode: '0755'
 
+- name: Install certs
+  ansible.builtin.copy:
+    content: '{{ item.cert }}'
+    dest: /etc/angie/certs/{{ item.name }}.crt
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{ angie_certs }}'
+  no_log: '{{ not debug }}'
+
+- name: Install cert keys
+  ansible.builtin.copy:
+    content: '{{ item.key }}'
+    dest: /etc/angie/certs/{{ item.name }}.key
+    owner: angie
+    group: angie
+    mode: '0400'
+  loop: '{{ angie_certs }}'
+  no_log: '{{ not debug }}'
+
 - name: Configure angie
   ansible.builtin.template:
     src: '{{ angie_conf_template }}'
     dest: /etc/angie/angie.conf
+    lstrip_blocks: true
     owner: root
     group: root
     mode: '0644'
+  notify: Reload service angie
+
+- name: Configure sites
+  ansible.builtin.template:
+    src: '{{ item }}.conf'
+    dest: /etc/angie/http.d/{{ item }}.conf
+    lstrip_blocks: true
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{ angie_sites }}'
+  notify: Reload service angie
+
+- name: Remove default config
+  ansible.builtin.file:
+    path: /etc/angie/http.d/default.conf
+    state: absent
+  when: angie_sites
   notify: Reload service angie
 
 - name: Enable and start service angie
