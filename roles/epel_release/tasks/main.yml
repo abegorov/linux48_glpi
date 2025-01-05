@@ -1,0 +1,4 @@
+- name: Add epel-release repo
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
