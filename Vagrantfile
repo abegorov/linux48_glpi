@@ -55,12 +55,12 @@ Vagrant.configure('2') do |config|
         end
       end
 
-      host_config[:networks].each do |network_type, network_args|
-        host.vm.network(network_type, **network_args)
-      end
       host_config[:intnets].each do |name, intnet|
         intnet[:virtualbox__intnet] = name.to_s
         host.vm.network(:private_network, **intnet)
+      end
+      host_config[:networks].each do |network_type, network_args|
+        host.vm.network(network_type, **network_args)
       end
       host_config[:forwarded_ports].each do |forwarded_port|
         host.vm.network(:forwarded_port, **forwarded_port)
