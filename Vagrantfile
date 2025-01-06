@@ -17,11 +17,31 @@ MACHINES = {
   :primary  => { :intnets => { :lan => { ip: '192.168.57.11' } } },
   :replica  => { :intnets => { :lan => { ip: '192.168.57.12' } } },
   :nfs      => { :intnets => { :lan => { ip: '192.168.57.13' } } },
-  :backend1 => { :intnets => { :lan => { ip: '192.168.57.14' } } },
-  :backend2 => { :intnets => { :lan => { ip: '192.168.57.15' } } },
+  :backend1 => {
+    :intnets => { :lan => { ip: '192.168.57.14' } },
+    :forwarded_ports => [
+      { :id => 'https', :guest_ip => '192.168.57.14', :guest => 443,
+                        :host_ip  =>     '127.0.0.1', :host  => 8444 },
+      { :id => 'vts',   :guest_ip => '192.168.57.14', :guest => 9913,
+                        :host_ip  =>     '127.0.0.1', :host  => 9901 },
+    ],
+  },
+  :backend2 => {
+    :intnets => { :lan => { ip: '192.168.57.15' } },
+    :forwarded_ports => [
+      { :id => 'https', :guest_ip => '192.168.57.15', :guest => 443,
+                        :host_ip  =>     '127.0.0.1', :host  => 8445 },
+      { :id => 'vts',   :guest_ip => '192.168.57.15', :guest => 9913,
+                        :host_ip  =>     '127.0.0.1', :host  => 9902 },
+    ],
+  },
   :frontend => {
     :intnets => { :lan => { ip: '192.168.57.18' } },
     :networks => { :private_network => { ip: '192.168.56.18' } },
+    :forwarded_ports => [
+      { :id => 'vts',   :guest_ip => '192.168.57.18', :guest => 9913,
+                        :host_ip  =>     '127.0.0.1', :host  => 9900 },
+    ],
   },
 }
 
