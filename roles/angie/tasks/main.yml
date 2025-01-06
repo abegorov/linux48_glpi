@@ -78,20 +78,4 @@
     enabled: true
     state: started
   ignore_errors: '{{ ansible_check_mode }}'
-
-- name: Enable http service in firewalld
-  ansible.posix.firewalld:
-    service: http
-    state: enabled
-    permanent: true
-    immediate: true
-    offline: true
-
-- name: Enable https service in firewalld
-  ansible.posix.firewalld:
-    service: https
-    state: enabled
-    permanent: true
-    immediate: true
-    offline: true
 ...

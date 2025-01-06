@@ -1,0 +1,9 @@
+---
+- name: Configure zone
+  ansible.builtin.include_tasks: zone.yml
+  loop: '{{ firewalld_zones |
+    ansible.builtin.dict2items(key_name="name", value_name="params") }}'
+  loop_control:
+    label: '{{ zone.name }}'
+    loop_var: zone
+...

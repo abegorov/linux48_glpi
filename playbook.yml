@@ -4,6 +4,7 @@
   become: true
   gather_facts: false
   roles:
+    - firewalld
     - tls_gen
 
 - name: Backup provision

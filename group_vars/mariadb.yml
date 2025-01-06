@@ -1,4 +1,8 @@
 ---
+firewalld_override:
+  public:
+    add_services: [mysql]
+
 mariadb_replication_user: replication
 mariadb_replication_password: '{{ lookup("ansible.builtin.password",
   "secrets/mariadb_replication_password.txt", length=26) }}'

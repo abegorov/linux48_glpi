@@ -42,11 +42,3 @@
     name: nfs-server.service
     enabled: true
     state: started
-
-- name: Enable nfs service in firewalld
-  ansible.posix.firewalld:
-    service: nfs
-    state: enabled
-    permanent: true
-    immediate: true
-    offline: true

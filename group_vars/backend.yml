@@ -2,6 +2,10 @@
 angie_sites: [glpi]
 angie_glpi_server_name: '{{ glpi_server_name }}'
 
+firewalld_override:
+  public:
+    add_services: [http, https]
+
 glpi_var_dir: /var/lib/glpi
 
 nfs_automount_mount: '{{ glpi_var_dir }}'

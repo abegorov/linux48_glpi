@@ -1,0 +1,12 @@
+---
+firewalld_default:
+  public:
+    interfaces: []
+    add_ports: []
+    remove_ports: []
+    add_services: []
+    remove_services: [dhcpv6-client, cockpit]
+firewalld_override: {}
+firewalld_zones: '{{ firewalld_default |
+  ansible.builtin.combine(firewalld_override, recursive=true) }}'
+...

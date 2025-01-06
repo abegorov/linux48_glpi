@@ -1,0 +1,51 @@
+---
+- name: Add ports for zone {{ zone.name }}
+  ansible.posix.firewalld:
+    zone: '{{ zone.name }}'
+    port: '{{ item }}'
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+  loop: '{{ zone.params.add_ports | default([]) }}'
+
+- name: Add services for zone {{ zone.name }}
+  ansible.posix.firewalld:
+    zone: '{{ zone.name }}'
+    service: '{{ item }}'
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+  loop: '{{ zone.params.add_services | default([]) }}'
+
+- name: Remove ports for zone {{ zone.name }}
+  ansible.posix.firewalld:
+    zone: '{{ zone.name }}'
+    port: '{{ item }}'
+    state: disabled
+    permanent: true
+    immediate: true
+    offline: true
+  loop: '{{ zone.params.add_ports | default([]) }}'
+
+- name: Remove services for zone {{ zone.name }}
+  ansible.posix.firewalld:
+    zone: '{{ zone.name }}'
+    service: '{{ item }}'
+    state: disabled
+    permanent: true
+    immediate: true
+    offline: true
+  loop: '{{ zone.params.remove_services | default([]) }}'
+
+- name: Assign interfaces to zone {{ zone.name }}
+  ansible.posix.firewalld:
+    zone: '{{ zone.name }}'
+    interface: '{{ item }}'
+    state: enabled
+    permanent: true
+    immediate: true
+    offline: true
+  loop: '{{ zone.params.interfaces | default([]) }}'
+...

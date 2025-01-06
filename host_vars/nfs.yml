@@ -1,6 +1,10 @@
 ---
 ip: '192.168.57.13'
 
+firewalld_override:
+  public:
+    add_services: [nfs]
+
 nfs_server_subdirs:
   glpi:
     owner: '{{ glpi_uid }}'

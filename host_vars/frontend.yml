@@ -2,6 +2,14 @@
 ip: '192.168.57.18'
 ip_external: '192.168.56.18'
 
+firewalld_override:
+  public:
+    add_services: [http, https]
+  dmz:
+    interfaces: [eth2]
+    add_services: [http, https]
+    remove_services: [ssh]
+
 angie_sites: [frontend]
 angie_frontend_upstreams: '{{ hostvars | ansible.builtin.dict2items |
   selectattr("key", "in", groups["backend"]) | map(attribute="value") |

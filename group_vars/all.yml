@@ -2,9 +2,11 @@
 ansible_python_interpreter: /usr/bin/python3
 debug: false
 
-firewalld_zones:
+firewalld_default:
   public:
-    add_services:
+    interfaces: [eth0, eth1]
+    add_ports: []
+    add_services: [ssh]
     remove_services: [dhcpv6-client, cockpit]
 
 tls_gen_cert_domain: otus.abegorov.ru
