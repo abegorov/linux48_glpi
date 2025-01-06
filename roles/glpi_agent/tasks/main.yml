@@ -1,0 +1,35 @@
+---
+- name: Install perl interpreter
+  ansible.builtin.dnf:
+    name: perl
+    state: present
+
+- name: Download glpi-agent installer
+  ansible.builtin.get_url:
+    url: '{{ glpi_agent_download_url }}'
+    dest: /usr/local/sbin/glpi-agent-linux-installer.pl
+    checksum: '{{ glpi_agent_download_checksum }}'
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Run glpi-agent installer
+  ansible.builtin.command: >-
+    /usr/local/sbin/glpi-agent-linux-installer.pl
+    --server='{{ glpi_agent_server }}'
+    --httpd-ip='{{ glpi_agent_httpd_ip }}'
+    --httpd-port='{{ glpi_agent_port }}'
+    --install
+    --no-question
+  args:
+    creates: /usr/bin/glpi-agent
+
+- name: Update glpi-agent configuration
+  ansible.builtin.template:
+    src: install.cfg
+    dest: /etc/glpi-agent/conf.d/00-install.cfg
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart service glpi-agent
+...

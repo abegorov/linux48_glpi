@@ -1,0 +1,12 @@
+---
+glpi_agent_version: '1.11'
+glpi_agent_download_url: >-
+  https://github.com/glpi-project/glpi-agent/releases/download/{{
+  glpi_agent_version }}/glpi-agent-{{ glpi_agent_version }}-linux-installer.pl
+glpi_agent_download_checksum: >-
+  sha256:e3bcc924dffc6668f5dc1815518f06870785956c13cb7dedcab0a2752306f8d6
+
+glpi_agent_server: '{{ undef() }}'
+glpi_agent_httpd_ip: '{{ undef() }}'
+glpi_agent_port: 62354
+...
