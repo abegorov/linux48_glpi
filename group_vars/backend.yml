@@ -1,10 +1,13 @@
 ---
-angie_sites: [glpi]
+angie_sites: [http_to_https, glpi, metrics]
 angie_set_real_ip_from: ['{{ hostvars["frontend"].ip }}']
+angie_http_to_https_listen: ['{{ ip }}:80']
+angie_glpi_listen: ['{{ ip }}:443']
 angie_glpi_server_name: '{{ glpi_server_name }}'
 
 firewalld_override:
   public:
+    add_ports: ['{{ angie_metrics_port }}/tcp']
     add_services: [http, https]
 
 glpi_var_dir: /var/lib/glpi

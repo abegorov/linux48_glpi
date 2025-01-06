@@ -32,6 +32,12 @@ angie_certs:
   - name: '{{ inventory_hostname }}'
     key: '{{ tls_key }}'
     cert: '{{ tls_cert }}'
+angie_passwd:
+  metrics:
+    - name: '{{ metrics_user }}'
+      password: '{{ metrics_password }}'
+angie_metrics_listen: ['{{ ip }}:{{ angie_metrics_port }}']
+angie_metrics_port: 9913
 
 glpi_server_name: glpi.otus.abegorov.ru
 
@@ -51,4 +57,8 @@ glpi_agent_server: '{{ ["https://"] | ansible.builtin.product(glpi_servers) |
   map("join") | join(",") }}'
 glpi_agent_httpd_ip: '{{ ip }}'
 glpi_agent_port: 62354
+
+metrics_user: metrics
+metrics_password: '{{ lookup("ansible.builtin.password",
+  "secrets/metrics_password.txt", length=26) }}'
 ...

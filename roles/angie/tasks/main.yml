@@ -14,6 +14,7 @@
     name:
       - angie
       - angie-module-vts
+      - python3-passlib
     state: present
 
 - name: Make new dir for certs
@@ -42,6 +43,14 @@
     group: angie
     mode: '0400'
   loop: '{{ angie_certs }}'
+  no_log: '{{ not debug }}'
+
+- name: Update passwords
+  ansible.builtin.include_tasks: passwd.yml
+  loop: '{{ angie_passwd |
+    ansible.builtin.dict2items(key_name="name", value_name="records") }}'
+  loop_control:
+    loop_var: passwd
   no_log: '{{ not debug }}'
 
 - name: Configure angie

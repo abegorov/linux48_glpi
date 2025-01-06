@@ -1,13 +1,19 @@
 ---
 angie_conf_template: angie.conf
 angie_certs: []
+angie_passwd: {}
 angie_sites: []
 angie_set_real_ip_from: []
 
+angie_http_to_https_listen: ['80']
+
+angie_glpi_listen: ['443']
 angie_glpi_dir: /usr/share/glpi
 angie_glpi_sock: /run/php-fpm/glpi.sock
 angie_glpi_server_name: glpi
 
+angie_frontend_listen: ['443']
 angie_frontend_upstreams: '{{ undef() }}'
-angie_frontend_port: 443
+
+angie_metrics_listen: ['9913']
 ...

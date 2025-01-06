@@ -4,13 +4,16 @@ ip_external: '192.168.56.18'
 
 firewalld_override:
   public:
+    add_ports: ['{{ angie_metrics_port }}/tcp']
     add_services: [http, https]
   dmz:
     interfaces: [eth2]
     add_services: [http, https]
     remove_services: [ssh]
 
-angie_sites: [frontend]
+angie_sites: [http_to_https, frontend, metrics]
+angie_http_to_https_listen: ['{{ ip_external }}:80']
+angie_frontend_listen: ['{{ ip_external }}:443']
 angie_frontend_upstreams: '{{ glpi_servers }}'
 angie_frontend_server_name: '{{ glpi_server_name }}'
 
