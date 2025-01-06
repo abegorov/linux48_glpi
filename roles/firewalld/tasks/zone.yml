@@ -27,7 +27,7 @@
     permanent: true
     immediate: true
     offline: true
-  loop: '{{ zone.params.add_ports | default([]) }}'
+  loop: '{{ zone.params.remove_ports | default([]) }}'
 
 - name: Remove services for zone {{ zone.name }}
   ansible.posix.firewalld:
