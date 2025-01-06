@@ -8,6 +8,15 @@
     mode: '0400'
   no_log: '{{ not debug }}'
 
+- name: Configure database replica
+  ansible.builtin.template:
+    src: config_db_slave.php
+    dest: '{{ glpi_config_dir }}/config_db_slave.php'
+    owner: glpi
+    group: glpi
+    mode: '0400'
+  no_log: '{{ not debug }}'
+
 - name: Check database schema
   become: true
   become_user: glpi

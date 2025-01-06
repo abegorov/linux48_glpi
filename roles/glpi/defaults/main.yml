@@ -18,6 +18,7 @@ glpi_var_dir: /var/lib/glpi
 
 glpi_crypt_key_file: secrets/glpicrypt.key
 glpi_db_host: '{{ undef() }}'
+glpi_db_replica: '{{ undef() }}'
 glpi_db_user: glpi
 glpi_db_password: '{{ undef() }}'
 glpi_db_name: glpi
