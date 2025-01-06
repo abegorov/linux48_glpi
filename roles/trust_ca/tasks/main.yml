@@ -1,0 +1,14 @@
+---
+- name: Add certificate to trusted CA list
+  ansible.builtin.copy:
+    content: '{{ item.value }}'
+    dest: /etc/pki/ca-trust/source/anchors/{{ item.key }}.crt
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  loop: '{{ trust_ca_certs | ansible.builtin.dict2items }}'
+  loop_control:
+    label: '{{ item.key }}'
+  notify: Update CA trust
+...
