@@ -1,13 +1,18 @@
 ---
 - name: Common provision
+  tags: common
   hosts: all
   become: true
   gather_facts: false
   roles:
     - firewalld
     - tls_gen
+    - trust_ca
+    - epel_release
+    - glpi_agent
 
 - name: Backup provision
+  tags: backup
   hosts: [backup]
   become: true
   gather_facts: false
@@ -16,6 +21,7 @@
     - ssh_known_hosts
 
 - name: DB provision
+  tags: db
   hosts: [mariadb]
   become: true
   gather_facts: false
@@ -30,6 +36,7 @@
     - mariadb_replica
 
 - name: NFS server provision
+  tags: nfs
   hosts: [nfs]
   become: true
   gather_facts: false
@@ -37,6 +44,7 @@
     - nfs_server
 
 - name: Frontend and backed provision
+  tags: web
   hosts: [frontend, backend]
   become: true
   gather_facts: false
@@ -44,6 +52,7 @@
     - angie
 
 - name: Backend provision
+  tags: backend
   hosts: [backend]
   become: true
   gather_facts: false
