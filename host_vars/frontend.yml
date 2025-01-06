@@ -11,9 +11,7 @@ firewalld_override:
     remove_services: [ssh]
 
 angie_sites: [frontend]
-angie_frontend_upstreams: '{{ hostvars | ansible.builtin.dict2items |
-  selectattr("key", "in", groups["backend"]) | map(attribute="value") |
-  map(attribute="ip") }}'
+angie_frontend_upstreams: '{{ glpi_servers }}'
 angie_frontend_server_name: '{{ glpi_server_name }}'
 
 tls_gen_cert_san:

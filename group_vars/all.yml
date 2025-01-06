@@ -5,7 +5,7 @@ debug: false
 firewalld_default:
   public:
     interfaces: [eth0, eth1]
-    add_ports: []
+    add_ports: ['{{ glpi_agent_port }}/tcp']
     add_services: [ssh]
     remove_services: [dhcpv6-client, cockpit]
 
@@ -24,6 +24,9 @@ tls_cert: |
     )
   }}
   {{ lookup("ansible.builtin.file", "secrets/certs/CA.crt") }}
+trust_ca_certs:
+  LOCAL ROOT CA: '{{ lookup("ansible.builtin.file",
+    "secrets/certs/CA.crt") }}'
 
 angie_certs:
   - name: '{{ inventory_hostname }}'
@@ -35,8 +38,17 @@ glpi_server_name: glpi.otus.abegorov.ru
 glpi_uid: 60000
 glpi_gid: 60000
 glpi_db_host: '{{ hostvars["primary"].ip }}'
+glpi_db_replica: '{{ hostvars["replica"].ip }}'
 glpi_db_user: glpi
 glpi_db_password: '{{ lookup("ansible.builtin.password",
   "secrets/mariadb_glpi_password.txt", length=26) }}'
 glpi_db_name: glpi
+glpi_servers: '{{ hostvars | ansible.builtin.dict2items |
+  selectattr("key", "in", groups["backend"]) | map(attribute="value") |
+  map(attribute="ip") }}'
+
+glpi_agent_server: '{{ ["https://"] | ansible.builtin.product(glpi_servers) |
+  map("join") | join(",") }}'
+glpi_agent_httpd_ip: '{{ ip }}'
+glpi_agent_port: 62354
 ...
