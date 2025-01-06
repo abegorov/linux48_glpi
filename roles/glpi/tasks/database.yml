@@ -21,7 +21,7 @@
 
 - name: Touch glpicrypt.key
   ansible.builtin.copy:
-    content: ''
+    content: '1234567890ABCDEF1234567890ABCDEF'
     dest: '{{ glpi_config_dir }}/glpicrypt.key'
     force: false
     owner: glpi
