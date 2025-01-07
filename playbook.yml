@@ -11,6 +11,14 @@
     - epel_release
     - glpi_agent
 
+- name: Logs provision
+  tags: logs
+  hosts: logs
+  become: true
+  gather_facts: false
+  roles:
+    - opensearch
+
 - name: Backup provision
   tags: backup
   hosts: [backup]
