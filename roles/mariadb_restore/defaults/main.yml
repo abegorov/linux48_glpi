@@ -2,7 +2,7 @@
 mariadb_restore_run: false
 mariadb_restore_dir: /var/lib/mysql
 mariadb_restore_src_user: root
-mariadb_restore_src_host: '{{ undef() }}'
+mariadb_restore_src_host: '{{ undef(hint="mariadb_restore_src_host") }}'
 mariadb_restore_dst_user: root
-mariadb_restore_dst_host: '{{ undef() }}'
+mariadb_restore_dst_host: '{{ undef(hint="mariadb_restore_dst_host") }}'
 ...

@@ -1,6 +1,6 @@
 ---
-nfs_automount_mount: '{{ undef() }}'
-nfs_automount_host: '{{ undef() }}'
-nfs_automount_path: '{{ undef() }}'
+nfs_automount_mount: '{{ undef(hint="nfs_automount_mount") }}'
+nfs_automount_host: '{{ undef(hint="nfs_automount_host") }}'
+nfs_automount_path: '{{ undef(hint="nfs_automount_path") }}'
 nfs_automount_options:
 ...
