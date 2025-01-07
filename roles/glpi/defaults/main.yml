@@ -22,4 +22,10 @@ glpi_db_replica: '{{ undef() }}'
 glpi_db_user: glpi
 glpi_db_password: '{{ undef() }}'
 glpi_db_name: glpi
+glpi_db_ca:
+glpi_db_cafile: '{{ glpi_config_dir }}/ca.crt'
+glpi_db_cert:
+glpi_db_certfile: '{{ glpi_config_dir }}/client.crt'
+glpi_db_key:
+glpi_db_keyfile: '{{ glpi_config_dir }}/client.key'
 ...

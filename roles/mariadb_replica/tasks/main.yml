@@ -24,6 +24,9 @@
     primary_password: '{{ repl.primary_password | default(omit) }}'
     primary_use_gtid: '{{ repl.primary_use_gtid | default(omit) }}'
     primary_ssl: '{{ repl.primary_ssl | default(omit) }}'
+    primary_ssl_ca: '{{ repl.primary_ssl_ca | default(omit) }}'
+    primary_ssl_cert: '{{ repl.primary_ssl_cert | default(omit) }}'
+    primary_ssl_key: '{{ repl.primary_ssl_key | default(omit) }}'
   when: mariadb_replica_params and not mariadb_replica_status.Is_Replica
   no_log: '{{ not debug }}'
 

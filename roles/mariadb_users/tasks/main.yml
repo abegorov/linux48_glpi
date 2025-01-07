@@ -25,6 +25,7 @@
       default(omit) }}'
     priv: '{{ user.priv | default(omit) }}'
     resource_limits: '{{ user.resource_limits | default(omit) }}'
+    tls_requires: '{{ user.tls_requires | default(omit) }}'
     column_case_sensitive: '{{ user.column_case_sensitive | default(omit) }}'
     state: present
   loop: '{{ mariadb_users_list }}'

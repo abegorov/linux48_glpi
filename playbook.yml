@@ -30,6 +30,7 @@
     - ssh_authorized_keys
     - mariadb_status
     - mariadb_restore
+    - mariadb_tls
     - mariadb_config
     - mariadb_databases
     - mariadb_users

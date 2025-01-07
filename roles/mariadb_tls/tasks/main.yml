@@ -1,0 +1,39 @@
+---
+- name: Create mariadb tls directory
+  ansible.builtin.file:
+    path: '{{ mariadb_tls_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update mariadb tls ca certificate
+  ansible.builtin.copy:
+    content: '{{ mariadb_tls_ca }}'
+    dest: '{{ mariadb_tls_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  when: mariadb_tls_ca
+
+- name: Update mariadb tls certificate
+  ansible.builtin.copy:
+    content: '{{ mariadb_tls_cert }}'
+    dest: '{{ mariadb_tls_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  when: mariadb_tls_cert
+
+- name: Update mariadb tls key
+  ansible.builtin.copy:
+    content: '{{ mariadb_tls_key }}'
+    dest: '{{ mariadb_tls_keyfile }}'
+    owner: root
+    group: mysql
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  when: mariadb_tls_key
+...

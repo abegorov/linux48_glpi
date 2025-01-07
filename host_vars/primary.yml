@@ -4,6 +4,10 @@ ip: '192.168.57.11'
 mariadb_config_override:
   server_id: 1
   gtid_domain_id: 1
+  bind_address: '{{ ip }}'
+  ssl_ca: '{{ mariadb_tls_cafile }}'
+  ssl_cert: '{{ mariadb_tls_certfile }}'
+  ssl_key: '{{ mariadb_tls_keyfile }}'
 
 mariadb_users_remove_anonymous: true
 
@@ -13,10 +17,14 @@ mariadb_users_list:
     password: '{{ mariadb_replication_password }}'
     priv:
       '*.*': REPLICATION REPLICA
+    tls_requires:
+      x509:
   - name: '{{ glpi_db_user }}'
     password: '{{ glpi_db_password }}'
     priv:
       'glpi.*': ALL
+    tls_requires:
+      x509:
   - name: '{{ mariadb_exporter_user }}'
     host: localhost
     password: '{{ mariadb_exporter_password }}'
@@ -24,6 +32,8 @@ mariadb_users_list:
       '*.*': PROCESS,BINLOG MONITOR,SELECT
     resource_limits:
       MAX_USER_CONNECTIONS: 3
+    tls_requires:
+      x509:
 
 mariadb_databases_list: ['{{ glpi_db_name }}']
 

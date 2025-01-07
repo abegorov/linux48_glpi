@@ -1,0 +1,31 @@
+---
+- name: Update GLPI tls ca certificate
+  ansible.builtin.copy:
+    content: '{{ glpi_db_ca }}'
+    dest: '{{ glpi_db_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  when: glpi_db_ca
+
+- name: Update GLPI tls certificate
+  ansible.builtin.copy:
+    content: '{{ glpi_db_cert }}'
+    dest: '{{ glpi_db_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  when: glpi_db_cert
+
+- name: Update GLPI tls key
+  ansible.builtin.copy:
+    content: '{{ glpi_db_key }}'
+    dest: '{{ glpi_db_keyfile }}'
+    owner: root
+    group: glpi
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  when: glpi_db_key
+...

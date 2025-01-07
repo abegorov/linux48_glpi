@@ -5,11 +5,18 @@ mariadb_config_override:
   server_id: 2
   gtid_domain_id: 1
   read_only: true
+  bind_address: '{{ ip }}'
+  ssl_ca: '{{ mariadb_tls_cafile }}'
+  ssl_cert: '{{ mariadb_tls_certfile }}'
+  ssl_key: '{{ mariadb_tls_keyfile }}'
 
 mariadb_replica_params:
   primary_host: '{{ hostvars["primary"].ip }}'
   primary_user: '{{ mariadb_replication_user }}'
   primary_password: '{{ mariadb_replication_password }}'
+  primary_ssl_ca: '{{ mariadb_tls_cafile }}'
+  primary_ssl_cert: '{{ mariadb_tls_certfile }}'
+  primary_ssl_key: '{{ mariadb_tls_keyfile }}'
 
 mariadb_restore_run: '{{ mariadb_status.status.ActiveState == "inactive" and
   hostvars["primary"].mariadb_status.status.ActiveState == "active" }}'

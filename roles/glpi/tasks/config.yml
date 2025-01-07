@@ -15,6 +15,9 @@
     group: root
     mode: '0644'
 
+- name: Update database connection certs
+  ansible.builtin.import_tasks: certs.yml
+
 - name: Create database
-  ansible.builtin.include_tasks: database.yml
+  ansible.builtin.import_tasks: database.yml
 ...

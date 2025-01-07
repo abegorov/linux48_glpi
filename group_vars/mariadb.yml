@@ -3,6 +3,14 @@ firewalld_override:
   public:
     add_services: [mysql]
 
+mariadb_tls_dir: /etc/mariadb/certs
+mariadb_tls_ca: '{{ tls_ca }}'
+mariadb_tls_cafile: '{{ mariadb_tls_dir }}/ca.crt'
+mariadb_tls_cert: '{{ tls_cert }}'
+mariadb_tls_certfile: '{{ mariadb_tls_dir }}/server.crt'
+mariadb_tls_key: '{{ tls_key }}'
+mariadb_tls_keyfile: '{{ mariadb_tls_dir }}/server.key'
+
 mariadb_replication_user: replication
 mariadb_replication_password: '{{ lookup("ansible.builtin.password",
   "secrets/mariadb_replication_password.txt", length=26) }}'
