@@ -15,11 +15,8 @@ glpi_config_dir: /etc/glpi
 glpi_db_host: '{{ hostvars["primary"].ip }}'
 glpi_db_replica: '{{ hostvars["replica"].ip }}'
 glpi_db_ca: '{{ tls_ca }}'
-glpi_db_cafile: '{{ glpi_config_dir }}/ca.crt'
 glpi_db_cert: '{{ tls_cert }}'
-glpi_db_certfile: '{{ glpi_config_dir }}/client.crt'
 glpi_db_key: '{{ tls_key }}'
-glpi_db_keyfile: '{{ glpi_config_dir }}/client.key'
 
 nfs_automount_mount: '{{ glpi_var_dir }}'
 nfs_automount_host: '{{ hostvars["nfs"].ip }}'
