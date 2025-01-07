@@ -1,0 +1,16 @@
+---
+- name: Add opensearch repo
+  ansible.builtin.yum_repository:
+    name: opensearch-2.x
+    description: OpenSearch 2.x
+    baseurl: https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/yum
+    gpgcheck: true
+    enabled: true
+    gpgkey: https://artifacts.opensearch.org/publickeys/opensearch.pgp
+    state: present
+
+- name: Install opensearch
+  ansible.builtin.dnf:
+    name: opensearch
+    state: present
+...

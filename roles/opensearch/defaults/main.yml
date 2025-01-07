@@ -1,0 +1,19 @@
+---
+opensearch_ca: '{{ undef(hint="opensearch_ca") }}'
+opensearch_cakey: '{{ undef(hint="opensearch_cakey") }}'
+opensearch_cafile: /etc/opensearch/ca.crt
+opensearch_cert: '{{ undef(hint="opensearch_cert") }}'
+opensearch_certfile: /etc/opensearch/server.crt
+opensearch_key: '{{ undef(hint="opensearch_key") }}'
+opensearch_keyfile: /etc/opensearch/server.key
+
+opensearch_network_hosts: []
+opensearch_users: {}
+
+opensearch_admin_cn: OpenSearch Administrator
+opensearch_admin_dn: CN={{ opensearch_admin_cn }}
+opensearch_admin_keyfile: /etc/opensearch/admin.key
+opensearch_admin_certfile: /etc/opensearch/admin.crt
+
+opensearch_syslog_indexes: []
+...

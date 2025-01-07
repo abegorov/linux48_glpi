@@ -1,0 +1,18 @@
+---
+- name: Restart service opensearch
+  ansible.builtin.systemd_service:
+    name: opensearch.service
+    state: restarted
+  ignore_errors: '{{ ansible_check_mode }}'
+
+- name: Reconfigure opensearch security
+  ansible.builtin.command: >-
+    /usr/share/opensearch/plugins/opensearch-security/tools/securityadmin.sh
+    -cd /etc/opensearch/opensearch-security
+    -cacert {{ opensearch_cafile | ansible.builtin.quote }}
+    -cert {{ opensearch_admin_certfile | ansible.builtin.quote }}
+    -key {{ opensearch_admin_keyfile | ansible.builtin.quote }}
+  environment:
+    OPENSEARCH_JAVA_HOME: /usr/share/opensearch/jdk
+  changed_when: true
+...

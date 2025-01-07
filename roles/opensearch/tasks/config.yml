@@ -1,0 +1,42 @@
+---
+- name: Configure opensearch
+  ansible.builtin.template:
+    src: opensearch.yml
+    dest: /etc/opensearch/opensearch.yml
+    lstrip_blocks: true
+    owner: opensearch
+    group: opensearch
+    mode: '0640'
+  notify: Restart service opensearch
+
+- name: Configure opensearch roles
+  ansible.builtin.template:
+    src: roles.yml.j2
+    dest: /etc/opensearch/opensearch-security/roles.yml
+    lstrip_blocks: true
+    owner: opensearch
+    group: opensearch
+    mode: '0640'
+  notify: Reconfigure opensearch security
+
+- name: Configure opensearch roles mapping
+  ansible.builtin.template:
+    src: roles_mapping.yml.j2
+    dest: /etc/opensearch/opensearch-security/roles_mapping.yml
+    lstrip_blocks: true
+    owner: opensearch
+    group: opensearch
+    mode: '0640'
+  notify: Reconfigure opensearch security
+
+- name: Configure opensearch users
+  ansible.builtin.template:
+    src: internal_users.yml.j2
+    dest: /etc/opensearch/opensearch-security/internal_users.yml
+    lstrip_blocks: true
+    owner: opensearch
+    group: opensearch
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Reconfigure opensearch security
+...

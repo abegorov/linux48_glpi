@@ -1,0 +1,62 @@
+---
+- name: Install python3-cryptography
+  ansible.builtin.dnf:
+    name: python3-cryptography
+    state: present
+
+- name: Update opensearch tls ca certificate
+  ansible.builtin.copy:
+    content: '{{ opensearch_ca }}'
+    dest: '{{ opensearch_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+
+- name: Update opensearch tls certificate
+  ansible.builtin.copy:
+    content: '{{ opensearch_cert }}'
+    dest: '{{ opensearch_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+
+- name: Update opensearch tls key
+  ansible.builtin.copy:
+    content: '{{ opensearch_key }}'
+    dest: '{{ opensearch_keyfile }}'
+    owner: root
+    group: opensearch
+    mode: '0640'
+  no_log: '{{ not debug }}'
+
+- name: Create admin private key
+  community.crypto.openssl_privatekey:
+    path: '{{ opensearch_admin_keyfile }}'
+    format: pkcs8
+    owner: root
+    group: root
+    mode: '0600'
+  no_log: '{{ not debug }}'
+
+- name: Create admin certificate signing request (CSR)
+  community.crypto.openssl_csr_pipe:
+    common_name: '{{ opensearch_admin_cn }}'
+    use_common_name_for_san: false
+    privatekey_path: '{{ opensearch_admin_keyfile }}'
+  no_log: '{{ not debug }}'
+  changed_when: false
+  register: opensearch_admin_cert_csr
+
+- name: Create host certificate from CSR
+  community.crypto.x509_certificate:
+    path: '{{ opensearch_admin_certfile }}'
+    csr_content: '{{ opensearch_admin_cert_csr.csr }}'
+    provider: ownca
+    ownca_content: '{{ opensearch_ca }}'
+    ownca_privatekey_content: '{{ opensearch_cakey }}'
+    ownca_not_before: '-1d'
+    ownca_not_after: '+36500d'
+  no_log: '{{ not debug }}'
+...
