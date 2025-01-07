@@ -20,7 +20,7 @@
 - name: Configure GLPI service
   ansible.builtin.import_tasks: service.yml
 
-- name: Remove install directory
+- name: Remove install.php
   ansible.builtin.file:
     path: '{{ glpi_dir }}/install/install.php'
     state: absent
