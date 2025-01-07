@@ -1,0 +1,40 @@
+---
+ip: '192.168.57.16'
+
+firewalld_override:
+  public:
+    add_services: [kibana, elasticsearch]
+
+tls_gen_cert_cn: '{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
+
+opensearch_ca: '{{ tls_ca }}'
+opensearch_cert: '{{ tls_cert }}'
+opensearch_key: '{{ tls_key }}'
+
+opensearch_network_hosts: ['{{ ip }}']
+
+opensearch_admin_password_file: secrets/opensearch_admin_password.txt
+opensearch_kibanaserver_password_file:
+  secrets/opensearch_kibanaserver_password.txt
+
+opensearch_users:
+  admin:
+    hash: '{{ lookup("ansible.builtin.password",
+      opensearch_admin_password_file, length=26, encrypt="bcrypt") }}'
+    reserved: true
+    backend_roles: [admin]
+  kibanaserver:
+    hash: '{{ lookup("ansible.builtin.password",
+      opensearch_kibanaserver_password_file, length=26, encrypt="bcrypt") }}'
+    reserved: true
+  rsyslog:
+    hash: '{{ lookup("ansible.builtin.password",
+      opensearch_rsyslog_password_file, length=26, encrypt="bcrypt") }}'
+    reserved: false
+    backend_roles: [syslog]
+
+opensearch_syslog_indexes: [glpi, nginx, syslog]
+
+opensearch_cakey: '{{ lookup("ansible.builtin.file",
+  "secrets/certs/CA.key") }}'
+...

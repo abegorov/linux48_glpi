@@ -54,6 +54,10 @@ glpi_agent_server: '{{ ["https://"] | ansible.builtin.product(glpi_servers) |
 glpi_agent_httpd_ip: '{{ ip }}'
 glpi_agent_port: 62354
 
+opensearch_rsyslog_password: '{{ lookup("ansible.builtin.password",
+  opensearch_password_file, length=26, encrypt="bcrypt") }}'
+opensearch_rsyslog_password_file: "secrets/opensearch_rsyslog_password.txt"
+
 metrics_user: metrics
 metrics_password: '{{ lookup("ansible.builtin.password",
   "secrets/metrics_password.txt", length=26) }}'
