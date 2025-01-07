@@ -35,6 +35,15 @@ MACHINES = {
                         :host_ip  =>     '127.0.0.1', :host  => 9902 },
     ],
   },
+  :logs => {
+    :cpus => 2,
+    :memory => 4096,
+    :intnets => { :lan => { ip: '192.168.57.16' } },
+    :forwarded_ports => [
+      { :id => 'kibana', :guest_ip => '192.168.57.16', :guest => 5601,
+                         :host_ip  =>     '127.0.0.1', :host  => 5601 },
+    ],
+  },
   :frontend => {
     :intnets => { :lan => { ip: '192.168.57.18' } },
     :networks => { :private_network => { ip: '192.168.56.18' } },
