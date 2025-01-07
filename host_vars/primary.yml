@@ -23,8 +23,6 @@ mariadb_users_list:
     password: '{{ glpi_db_password }}'
     priv:
       'glpi.*': ALL
-    tls_requires:
-      x509:
   - name: '{{ mariadb_exporter_user }}'
     host: localhost
     password: '{{ mariadb_exporter_password }}'
