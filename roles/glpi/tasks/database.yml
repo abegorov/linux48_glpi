@@ -33,7 +33,7 @@
     content: '1234567890ABCDEF1234567890ABCDEF'
     dest: '{{ glpi_config_dir }}/glpicrypt.key'
     force: false
-    owner: root
+    owner: glpi
     group: glpi
     mode: '0660'
 
@@ -68,7 +68,7 @@
     content: '{{ lookup("ansible.builtin.file", glpi_crypt_key_file) |
       ansible.builtin.b64decode }}'
     dest: '{{ glpi_config_dir }}/glpicrypt.key'
-    owner: root
+    owner: glpi
     group: glpi
     mode: '0660'
   no_log: '{{ not debug }}'
