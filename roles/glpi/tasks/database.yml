@@ -3,18 +3,18 @@
   ansible.builtin.template:
     src: config_db.php
     dest: '{{ glpi_config_dir }}/config_db.php'
-    owner: glpi
+    owner: root
     group: glpi
-    mode: '0400'
+    mode: '0640'
   no_log: '{{ not debug }}'
 
 - name: Configure database replica
   ansible.builtin.template:
     src: config_db_slave.php
     dest: '{{ glpi_config_dir }}/config_db_slave.php'
-    owner: glpi
+    owner: root
     group: glpi
-    mode: '0400'
+    mode: '0640'
   no_log: '{{ not debug }}'
 
 - name: Check database schema
@@ -33,9 +33,9 @@
     content: '1234567890ABCDEF1234567890ABCDEF'
     dest: '{{ glpi_config_dir }}/glpicrypt.key'
     force: false
-    owner: glpi
+    owner: root
     group: glpi
-    mode: '0600'
+    mode: '0660'
 
 - name: Initialize database
   become: true
@@ -68,8 +68,8 @@
     content: '{{ lookup("ansible.builtin.file", glpi_crypt_key_file) |
       ansible.builtin.b64decode }}'
     dest: '{{ glpi_config_dir }}/glpicrypt.key'
-    owner: glpi
+    owner: root
     group: glpi
-    mode: '0600'
+    mode: '0660'
   no_log: '{{ not debug }}'
 ...

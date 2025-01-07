@@ -6,9 +6,9 @@
     name: '{{ item.name }}'
     password: '{{ item.password }}'
     hash_scheme: bcrypt
-    owner: angie
+    owner: root
     group: angie
-    mode: '0400'
+    mode: '0640'
   loop: '{{ passwd.records }}'
   no_log: '{{ not debug }}'
 ...
