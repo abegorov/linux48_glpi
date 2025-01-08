@@ -9,6 +9,13 @@ firewalld_default:
     add_services: [ssh]
     remove_services: [dhcpv6-client, cockpit]
 
+rsyslog_elasticsearch_server: '{{ hostvars["logs"].ip }}:9200'
+rsyslog_elasticsearch_user: rsyslog
+rsyslog_elasticsearch_password: '{{ lookup("ansible.builtin.password",
+  opensearch_rsyslog_password_file, length=26) }}'
+rsyslog_rules_add: []
+rsyslog_rules_default: [audit, syslog]
+
 tls_gen_cert_domain: otus.abegorov.ru
 tls_gen_cert_san:
   - 'DNS:{{ inventory_hostname_short }}.{{ tls_gen_cert_domain }}'
@@ -54,8 +61,6 @@ glpi_agent_server: '{{ ["https://"] | ansible.builtin.product(glpi_servers) |
 glpi_agent_httpd_ip: '{{ ip }}'
 glpi_agent_port: 62354
 
-opensearch_rsyslog_password: '{{ lookup("ansible.builtin.password",
-  opensearch_password_file, length=26, encrypt="bcrypt") }}'
 opensearch_rsyslog_password_file: "secrets/opensearch_rsyslog_password.txt"
 
 metrics_user: metrics

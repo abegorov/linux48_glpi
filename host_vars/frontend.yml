@@ -11,6 +11,8 @@ firewalld_override:
     add_services: [http, https]
     remove_services: [ssh]
 
+rsyslog_rules_add: [nginx]
+
 angie_sites: [http_to_https, frontend, metrics]
 angie_http_to_https_listen: ['{{ ip_external }}:80']
 angie_frontend_listen: ['{{ ip_external }}:443']
