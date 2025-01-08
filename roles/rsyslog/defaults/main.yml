@@ -1,0 +1,11 @@
+---
+rsyslog_elasticsearch_server: '{{
+  undef(hint="rsyslog_elasticsearch_server") }}'
+rsyslog_elasticsearch_user: '{{ undef(hint="rsyslog_elasticsearch_user") }}'
+rsyslog_elasticsearch_password: '{{
+  undef(hint="rsyslog_elasticsearch_password") }}'
+
+rsyslog_rules: '{{ rsyslog_rules_default + rsyslog_rules_add }}'
+rsyslog_rules_add: []
+rsyslog_rules_default: [audit, syslog]
+...

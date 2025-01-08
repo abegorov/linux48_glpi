@@ -1,0 +1,22 @@
+---
+- name: Install rsyslog and rsyslog-elasticsearch
+  ansible.builtin.dnf:
+    name:
+      - rsyslog
+      - rsyslog-elasticsearch
+      - rsyslog-mmjsonparse
+    state: present
+
+- name: Update rsyslog configuration
+  ansible.builtin.template:
+    src: rsyslog.conf
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: '0640'
+    validate: /usr/sbin/rsyslogd -N1 -f %s
+  no_log: '{{ not debug }}'
+  notify: Restart rsyslog.service
+
+- name: Import SELinux tasks
+  ansible.builtin.import_tasks: selinux.yml

@@ -1,0 +1,24 @@
+---
+- name: Get installed SELinux modules
+  ansible.builtin.command: semodule -l
+  changed_when: false
+  register: rsyslog_selinux_modules
+
+- name: Install syslogd-audit-log SELinux module
+  when: '"syslogd-audit-log" not in rsyslog_selinux_modules.stdout_lines'
+  block:
+    - name: Copy syslogd-audit-log SELinux module
+      ansible.builtin.copy:
+        src: syslogd-audit-log.pp
+        dest: /tmp/syslogd-audit-log.pp
+        mode: '0600'
+
+    - name: Install syslogd-audit-log SELinux module
+      ansible.builtin.command: semodule -i /tmp/syslogd-audit-log.pp
+      changed_when: true
+  always:
+    - name: Remove syslogd-audit-log.pp file
+      ansible.builtin.file:
+        path: /tmp/syslogd-audit-log.pp
+        state: absent
+...

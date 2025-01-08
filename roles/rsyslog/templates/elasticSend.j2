@@ -1,0 +1,17 @@
+{% macro elasticSend(es, index, template = 'elasticSearchSyslog') %}
+action(
+  esVersion.major="8"
+  type="omelasticsearch"
+  server="{{ es.server }}"
+  usehttps="on"
+  allowunsignedcerts="off"
+  skipverifyhost="off"
+  uid="{{ es.user }}"
+  pwd="{{ es.password }}"
+  template="{{ template }}"
+  searchIndex="{{ index }}"
+  dynSearchIndex="on"
+  bulkmode="on"
+  errorfile="/var/log/rsyslog-omelasticsearch.log"
+)
+{%- endmacro %}
