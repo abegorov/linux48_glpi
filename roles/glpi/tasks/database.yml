@@ -44,7 +44,8 @@
   ansible.builtin.shell: |
     set -e
     set -o pipefail
-    php bin/console -qn db:install > /dev/null
+    php bin/console -qn db:install -L {{ glpi_language |
+      ansible.builtin.quote }} > /dev/null
     cat '{{ glpi_config_dir }}/glpicrypt.key' | base64
   args:
     chdir: '{{ glpi_dir }}'

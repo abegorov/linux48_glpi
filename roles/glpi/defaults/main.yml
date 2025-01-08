@@ -6,6 +6,8 @@ glpi_download_url: https://github.com/glpi-project/glpi/releases/download/{{
 glpi_download_checksum: >-
   sha256:4cfc485ad2b1ba16e38d2725a13375bda784abf1533a79971711feed0a7f5e11
 
+glpi_language: ru_RU
+
 glpi_uid: 60000
 glpi_gid: 60000
 glpi_fpm_listen_acl_users: angie
