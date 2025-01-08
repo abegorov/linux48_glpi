@@ -1,4 +1,9 @@
 ---
+- name: Install python3-PyMySQL
+  ansible.builtin.dnf:
+    name: python3-PyMySQL
+    state: present
+
 - name: Configure database connection
   ansible.builtin.template:
     src: config_db.php
@@ -17,17 +22,6 @@
     mode: '0640'
   no_log: '{{ not debug }}'
 
-- name: Check database schema
-  become: true
-  become_user: glpi
-  run_once: true
-  ansible.builtin.command:
-    cmd: php bin/console -qn db:check_schema_integrity
-    chdir: '{{ glpi_dir }}'
-  changed_when: false
-  register: glpi_check_database_schema
-  failed_when: glpi_check_database_schema.rc not in [0, 4]
-
 - name: Touch glpicrypt.key
   ansible.builtin.copy:
     content: '1234567890ABCDEF1234567890ABCDEF'
@@ -37,7 +31,21 @@
     group: glpi
     mode: '0660'
 
-- name: Initialize database
+- name: List databases
+  run_once: true
+  community.mysql.mysql_info:
+    login_host: '{{ glpi_db_host }}'
+    login_user: '{{ glpi_db_user }}'
+    login_password: '{{ glpi_db_password }}'
+    login_db: '{{ glpi_db_name }}'
+    ca_cert: '{{ glpi_db_cafile }}'
+    client_cert: '{{ glpi_db_certfile }}'
+    client_key: '{{ glpi_db_keyfile }}'
+    filter: databases
+    return_empty_dbs: false
+  register: glpi_databases_list
+
+- name: Initialize database if not exists
   become: true
   become_user: glpi
   run_once: true
@@ -50,7 +58,7 @@
   args:
     chdir: '{{ glpi_dir }}'
   changed_when: true
-  when: glpi_check_database_schema.rc > 0
+  when: glpi_db_name not in glpi_databases_list.databases
   register: glpi_crypt_key
 
 - name: Save GLPI crypt key file
