@@ -33,8 +33,16 @@ opensearch_users:
     reserved: false
     backend_roles: [syslog]
 
-opensearch_syslog_indexes: [glpi, nginx, syslog]
+opensearch_syslog_indexes: [audit, glpi, nginx, syslog]
 
 opensearch_cakey: '{{ lookup("ansible.builtin.file",
   "secrets/certs/CA.key") }}'
+
+opensearch_dashboards_ca: '{{ tls_ca }}'
+opensearch_dashboards_cert: '{{ tls_cert }}'
+opensearch_dashboards_key: '{{ tls_key }}'
+opensearch_dashboards_host: '{{ ip }}'
+opensearch_dashboards_osusername: kibanaserver
+opensearch_dashboards_ospassword: '{{ lookup("ansible.builtin.password",
+  opensearch_kibanaserver_password_file, length=26) }}'
 ...
