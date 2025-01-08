@@ -1,0 +1,36 @@
+---
+- name: Add opensearch-dashboards repo
+  ansible.builtin.yum_repository:
+    name: opensearch-dashboards-2.x
+    description: OpenSearch Dashboards 2.x
+    baseurl: https://artifacts.opensearch.org/releases/bundle/opensearch-dashboards/2.x/yum
+    gpgcheck: true
+    enabled: true
+    gpgkey: https://artifacts.opensearch.org/publickeys/opensearch.pgp
+    state: present
+
+- name: Install opensearch-dashboards
+  ansible.builtin.dnf:
+    name: opensearch-dashboards
+    state: present
+
+- name: Import certs tasks
+  ansible.builtin.import_tasks: certs.yml
+
+- name: Configure opensearch-dashboards
+  ansible.builtin.template:
+    src: opensearch_dashboards.yml
+    dest: /etc/opensearch-dashboards/opensearch_dashboards.yml
+    lstrip_blocks: true
+    owner: root
+    group: opensearch-dashboards
+    mode: '0640'
+  notify: Restart service opensearch-dashboards
+
+- name: Enable and start service opensearch-dashboards
+  ansible.builtin.systemd_service:
+    name: opensearch-dashboards.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+...

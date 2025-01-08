@@ -1,0 +1,17 @@
+---
+opensearch_dashboards_ca: '{{ undef(hint="opensearch_dashboards_cert") }}'
+opensearch_dashboards_cafile: /etc/opensearch-dashboards/ca.crt
+opensearch_dashboards_cert: '{{ undef(hint="opensearch_dashboards_cert") }}'
+opensearch_dashboards_certfile: /etc/opensearch-dashboards/server.crt
+opensearch_dashboards_key: '{{ undef(hint="opensearch_dashboards_key") }}'
+opensearch_dashboards_keyfile: /etc/opensearch-dashboards/server.key
+
+opensearch_dashboards_host: '{{ undef(hint="opensearch_dashboards_host") }}'
+opensearch_dashboards_osusername: '{{
+  undef(hint="opensearch_dashboards_username") }}'
+opensearch_dashboards_ospassword: '{{
+  undef(hint="opensearch_dashboards_password") }}'
+
+opensearch_dashboards_name: '{{ inventory_hostname }}'
+opensearch_dashboards_osurls: ['https://127.0.0.1:9200']
+...

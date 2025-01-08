@@ -1,0 +1,28 @@
+---
+- name: Update opensearch-dashboards tls ca certificate
+  ansible.builtin.copy:
+    content: '{{ opensearch_dashboards_ca }}'
+    dest: '{{ opensearch_dashboards_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+
+- name: Update opensearch-dashboards tls certificate
+  ansible.builtin.copy:
+    content: '{{ opensearch_dashboards_cert }}'
+    dest: '{{ opensearch_dashboards_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+
+- name: Update opensearch-dashboards tls key
+  ansible.builtin.copy:
+    content: '{{ opensearch_dashboards_key }}'
+    dest: '{{ opensearch_dashboards_keyfile }}'
+    owner: root
+    group: opensearch-dashboards
+    mode: '0640'
+  no_log: '{{ not debug }}'
+...
