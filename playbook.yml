@@ -9,7 +9,6 @@
     - tls_gen
     - trust_ca
     - epel_release
-    - glpi_agent
 
 - name: Logs provision
   tags: logs
@@ -18,6 +17,15 @@
   gather_facts: false
   roles:
     - opensearch
+    - opensearch_dashboards
+
+- name: Rsyslog provision
+  tags: rsyslog
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - rsyslog
 
 - name: Backup provision
   tags: backup
@@ -68,3 +76,11 @@
   roles:
     - nfs_automount
     - glpi
+
+- name: GLPI agent provision
+  tags: glpi_agent
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - glpi_agent
