@@ -5,4 +5,14 @@ firewalld_override:
   public:
     add_ports: ['9093/tcp']
     add_services: [prometheus, grafana]
+
+prometheus_ca: '{{ tls_ca }}'
+prometheus_cert: '{{ tls_full }}'
+prometheus_key: '{{ tls_key }}'
+prometheus_password: '{{ lookup("ansible.builtin.password",
+  "secrets/prometheus_password.txt", length=26) }}'
+prometheus_password_hash: '{{ lookup("ansible.builtin.password",
+  "secrets/prometheus_password.txt", length=26, encrypt="bcrypt") }}'
+prometheus_metrics_password: '{{ metrics_password }}'
+prometheus_listen: ['127.0.0.1:9090', '{{ ip }}:9090']
 ...
