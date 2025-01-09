@@ -11,6 +11,6 @@
 
 - name: Install opensearch
   ansible.builtin.dnf:
-    name: opensearch
+    name: opensearch-{{ opensearch_version }}
     state: present
 ...

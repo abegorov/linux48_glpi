@@ -1,4 +1,6 @@
 ---
+opensearch_dashboards_version: '2.17.1'
+
 opensearch_dashboards_ca: '{{ undef(hint="opensearch_dashboards_cert") }}'
 opensearch_dashboards_cafile: /etc/opensearch-dashboards/ca.crt
 opensearch_dashboards_cert: '{{ undef(hint="opensearch_dashboards_cert") }}'

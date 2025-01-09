@@ -11,7 +11,7 @@
 
 - name: Install opensearch-dashboards
   ansible.builtin.dnf:
-    name: opensearch-dashboards
+    name: opensearch-dashboards-{{ opensearch_dashboards_version }}
     state: present
 
 - name: Import certs tasks

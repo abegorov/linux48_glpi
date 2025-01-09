@@ -33,11 +33,12 @@ opensearch_users:
     reserved: false
     backend_roles: [syslog]
 
-opensearch_syslog_indexes: [audit, glpi, nginx, syslog]
 
+opensearch_version: '2.17.1'
+opensearch_syslog_indexes: [audit, glpi, nginx, syslog]
 opensearch_cakey: '{{ lookup("ansible.builtin.file",
   "secrets/certs/CA.key") }}'
-
+opensearch_dashboards_version: '{{ opensearch_version }}'
 opensearch_dashboards_ca: '{{ tls_ca }}'
 opensearch_dashboards_cert: '{{ tls_cert }}'
 opensearch_dashboards_key: '{{ tls_key }}'
