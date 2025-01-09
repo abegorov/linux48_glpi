@@ -1,0 +1,7 @@
+{% macro sock_trusted() %}
+set $!json!uid = $!uid;
+set $!json!pid = $!pid;
+set $!json!gid = $!gid;
+set $!json!appname = $!appname;
+set $!json!cmd = $!cmd;
+{%- endmacro %}

@@ -5,6 +5,7 @@
       - rsyslog
       - rsyslog-elasticsearch
       - rsyslog-mmjsonparse
+      - rsyslog-mmnormalize
     state: present
 
 - name: Update rsyslog configuration

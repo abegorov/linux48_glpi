@@ -1,0 +1,8 @@
+{% macro syslog_fields() %}
+set $!json!@timestamp = exec_template("timestamp");
+set $!json!hostname = $hostname;
+set $!json!syslogseverity = $syslogseverity-text;
+set $!json!syslogfacility = $syslogfacility-text;
+set $!json!syslogtag = $syslogtag;
+set $!json!programname = $programname;
+{%- endmacro %}

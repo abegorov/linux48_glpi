@@ -1,0 +1,8 @@
+{% macro json_parse() %}
+action(type="mmjsonparse" cookie="" container="$!mmjsonparse")
+if $parsesuccess == "OK" then {
+  set $!json!msg = $!mmjsonparse;
+} else {
+  set $!json!message = $msg;
+}
+{%- endmacro %}

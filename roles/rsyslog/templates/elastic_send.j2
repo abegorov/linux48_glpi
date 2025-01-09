@@ -1,4 +1,6 @@
-{% macro elasticSend(es, index, template = 'elasticSearchSyslog') %}
+{%
+  macro elastic_send(es, index = 'elastic_search_index', template = 'json')
+%}
 action(
   esVersion.major="8"
   type="omelasticsearch"
