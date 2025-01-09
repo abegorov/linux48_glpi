@@ -78,7 +78,6 @@
   ansible.builtin.template:
     src: web.yml.j2
     dest: /etc/node_exporter/web.yml
-    backup: true
     owner: node_exporter
     group: node_exporter
     mode: '0640'
