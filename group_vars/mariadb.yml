@@ -1,6 +1,7 @@
 ---
 firewalld_override:
   public:
+    add_ports: ['9104/tcp']
     add_services: [mysql]
 
 mariadb_tls_dir: /etc/mariadb/certs

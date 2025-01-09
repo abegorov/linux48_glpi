@@ -44,6 +44,19 @@ MACHINES = {
                          :host_ip  =>     '127.0.0.1', :host  => 5601 },
     ],
   },
+  :monitor => {
+    :cpus => 2,
+    :memory => 4096,
+    :intnets => { :lan => { ip: '192.168.57.17' } },
+    :forwarded_ports => [
+      { :id => 'grafana', :guest_ip => '192.168.57.17', :guest => 3000,
+                          :host_ip  =>     '127.0.0.1', :host  => 3000 },
+      { :id => 'prom',    :guest_ip => '192.168.57.17', :guest => 9090,
+                          :host_ip  =>     '127.0.0.1', :host  => 9090 },
+      { :id => 'alert',   :guest_ip => '192.168.57.17', :guest => 9093,
+                          :host_ip  =>     '127.0.0.1', :host  => 9093 },
+    ],
+  },
   :frontend => {
     :intnets => { :lan => { ip: '192.168.57.18' } },
     :networks => { :private_network => { ip: '192.168.56.18' } },

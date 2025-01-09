@@ -1,0 +1,8 @@
+---
+ip: '192.168.57.17'
+
+firewalld_override:
+  public:
+    add_ports: ['9093/tcp']
+    add_services: [prometheus, grafana]
+...

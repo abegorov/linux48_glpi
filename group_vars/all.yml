@@ -6,7 +6,7 @@ firewalld_default:
   public:
     interfaces: [eth0, eth1]
     add_ports: ['{{ glpi_agent_port }}/tcp']
-    add_services: [ssh]
+    add_services: [prometheus-node-exporter, ssh]
     remove_services: [dhcpv6-client, cockpit]
 
 rsyslog_elasticsearch_server: '{{ hostvars["logs"].ip }}:9200'
@@ -66,4 +66,10 @@ opensearch_rsyslog_password_file: "secrets/opensearch_rsyslog_password.txt"
 metrics_user: metrics
 metrics_password: '{{ lookup("ansible.builtin.password",
   "secrets/metrics_password.txt", length=26) }}'
+
+node_exporter_cert: '{{ tls_full }}'
+node_exporter_key: '{{ tls_key }}'
+node_exporter_user: '{{ metrics_user }}'
+node_exporter_password_hash: '{{ lookup("ansible.builtin.password",
+  "secrets/metrics_password.txt", length=26, encrypt="bcrypt") }}'
 ...
