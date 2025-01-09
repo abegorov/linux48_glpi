@@ -13,7 +13,6 @@
   ansible.builtin.copy:
     content: '{{ prometheus_cert }}'
     dest: '{{ prometheus_certfile }}'
-    backup: true
     owner: root
     group: root
     mode: '0644'

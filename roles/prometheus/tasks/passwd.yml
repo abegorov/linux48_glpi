@@ -1,21 +1,12 @@
 ---
 - name: Update prometheus password file
   ansible.builtin.copy:
-    content: '{{ prometheus_password }}'
-    dest: '{{ prometheus_passwordfile }}'
+    content: '{{ item.password }}'
+    dest: '{{ item.file }}'
     owner: prometheus
     group: prometheus
     mode: '0640'
-  no_log: '{{ not debug }}'
-  notify: Reload prometheus service
-
-- name: Update metrics password file
-  ansible.builtin.copy:
-    content: '{{ prometheus_metrics_password }}'
-    dest: '{{ prometheus_metrics_passwordfile }}'
-    owner: prometheus
-    group: prometheus
-    mode: '0640'
+  loop: '{{ prometheus_passwords }}'
   no_log: '{{ not debug }}'
   notify: Reload prometheus service
 ...

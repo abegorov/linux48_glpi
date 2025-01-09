@@ -4,26 +4,18 @@ global:
   evaluation_interval: 1m
 
 scrape_configs:
-  - job_name: 'prometheus'
+  {% for name, job in prometheus_jobs.items() %}
+  - job_name: '{{ name }}'
     scheme: https
     tls_config:
       ca_file: '{{ prometheus_cafile }}'
     basic_auth:
-      username: prometheus
-      password_file: '{{ prometheus_passwordfile }}'
+      username: '{{ job.username }}'
+      password_file: '{{ job.password_file }}'
     static_configs:
-      - targets: ['localhost:9090']
-
-#   - job_name: node
-#     scheme: https
-#     tls_config:
-#       ca_file: '{{ prometheus_cafile }}'
-#     basic_auth:
-#       username: metrics
-#       password_file: '{{ prometheus_metrics_passwordfile }}'
-#     static_configs:
-# {% for host in groups['all'] %}
-#       - targets: [{{ hostvars[host].ip }}:9100]
-#         labels:
-#           instance: '{{ host }}'
-# {% endfor %}
+      {% for host in job.hosts %}
+        - targets: ['{{ hostvars[host].prometheus_ip }}:{{ job.port }}']
+          labels:
+            instance: '{{ host }}'
+      {% endfor %}
+  {% endfor %}

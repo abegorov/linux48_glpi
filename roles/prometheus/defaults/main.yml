@@ -12,14 +12,21 @@ prometheus_key: '{{ undef(hint="prometheus_key") }}'
 prometheus_keyfile: /etc/prometheus/server.key
 
 prometheus_user: prometheus
-prometheus_password: '{{ undef(hint="prometheus_password") }}'
+prometheus_password_file: /etc/prometheus/prometheus.passwd
 prometheus_password_hash: '{{ undef(hint="prometheus_password_hash") }}'
-prometheus_passwordfile: /etc/prometheus/prometheus.passwd
-prometheus_metrics_password: '{{ undef(hint="prometheus_metrics_password") }}'
 prometheus_metrics_passwordfile: /etc/prometheus/metrics.passwd
 
 prometheus_retention_time: 7d
 prometheus_retention_size: 2GB
 
 prometheus_listen: ['127.0.0.1:9090']
+prometheus_jobs:
+  prometheus:
+    hosts: ['{{ inventory_hostname }}']
+    port: 9090
+    username: '{{ prometheus_user }}'
+    password_file: '{{ prometheus_password_file }}'
+prometheus_passwords:
+  - file: '{{ prometheus_password_file }}'
+    password: '{{ undef(hint="prometheus_password") }}'
 ...
