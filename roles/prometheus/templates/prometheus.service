@@ -1,0 +1,45 @@
+[Unit]
+Description=Prometheus
+After=network-online.target
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=exec
+User=prometheus
+Group=prometheus
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/prometheus \
+  --storage.tsdb.path=/var/lib/prometheus \
+  --storage.tsdb.retention.time={{ prometheus_retention_time }} \
+  --storage.tsdb.retention.size={{ prometheus_retention_size }} \
+  --web.config.file=/etc/prometheus/web.yml \
+{% for listen in prometheus_listen %}
+  --web.listen-address={{ listen }} \
+{% endfor %}
+  --config.file=/etc/prometheus/prometheus.yml
+
+CapabilityBoundingSet=CAP_SET_UID
+LimitNOFILE=65000
+LockPersonality=true
+NoNewPrivileges=true
+MemoryDenyWriteExecute=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectHome=true
+RemoveIPC=true
+RestrictSUIDSGID=true
+ReadWritePaths=/var/lib/prometheus
+
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+
+SyslogIdentifier=prometheus
+Restart=always
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+---
+- name: Import install tasks
+  ansible.builtin.import_tasks: install.yml
+
+- name: Import user tasks
+  ansible.builtin.import_tasks: user.yml
+
+- name: Import certs tasks
+  ansible.builtin.import_tasks: certs.yml
+
+- name: Import passwords tasks
+  ansible.builtin.import_tasks: passwd.yml
+
+- name: Import config tasks
+  ansible.builtin.import_tasks: config.yml
+
+- name: Update prometheus systemd service
+  ansible.builtin.template:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart prometheus service
+
+- name: Enable and start prometheus service
+  ansible.builtin.systemd:
+    name: prometheus.service
+    enabled: true
+    daemon_reload: true
+    state: started
+  when: not ansible_check_mode

@@ -1,0 +1,22 @@
+---
+- name: Update prometheus config
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    backup: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload prometheus service
+
+- name: Update prometheus web config
+  ansible.builtin.template:
+    src: web.yml.j2
+    dest: /etc/prometheus/web.yml
+    backup: true
+    owner: prometheus
+    group: prometheus
+    mode: '0640'
+  no_log: true
+  notify: Reload prometheus service
+...

@@ -1,0 +1,17 @@
+---
+- name: Create prometheus system group
+  ansible.builtin.group:
+    name: prometheus
+    state: present
+    system: true
+
+- name: Create prometheus system user
+  ansible.builtin.user:
+    name: prometheus
+    group: prometheus
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    home: /var/lib/prometheus
+    createhome: true
+...

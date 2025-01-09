@@ -1,0 +1,32 @@
+---
+- name: Update prometheus CA certificate file
+  ansible.builtin.copy:
+    content: '{{ prometheus_ca }}'
+    dest: '{{ prometheus_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Reload prometheus service
+
+- name: Update prometheus certificate file
+  ansible.builtin.copy:
+    content: '{{ prometheus_cert }}'
+    dest: '{{ prometheus_certfile }}'
+    backup: true
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Reload prometheus service
+
+- name: Update prometheus key file
+  ansible.builtin.copy:
+    content: '{{ prometheus_key }}'
+    dest: '{{ prometheus_keyfile }}'
+    owner: prometheus
+    group: prometheus
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Reload prometheus service
+...

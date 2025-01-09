@@ -1,0 +1,41 @@
+---
+- name: Check if prometheus is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/prometheus
+  changed_when: false
+  check_mode: false
+  register: prometheus_is_installed
+
+- name: Check current prometheus version
+  ansible.builtin.command: /usr/local/bin/prometheus --version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: prometheus_is_installed.stat.exists
+  register: prometheus_current_version
+
+- name: Download and unarchive prometheus release binary
+  ansible.builtin.unarchive:
+    src: "{{ prometheus_download_url }}"
+    dest: /usr/local/bin/
+    include:
+      - prometheus-{{ prometheus_version }}.linux-amd64/prometheus
+      - prometheus-{{ prometheus_version }}.linux-amd64/promtool
+    remote_src: true
+    extra_opts: --strip-components=1
+    owner: root
+    group: root
+    mode: '0755'
+  when: not prometheus_is_installed.stat.exists
+    or prometheus_version not in
+      prometheus_current_version.stdout_lines | first
+  notify: Restart prometheus service
+
+- name: Create prometheus config directory
+  ansible.builtin.file:
+    path: /etc/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+...
