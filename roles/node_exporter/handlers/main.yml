@@ -1,4 +1,10 @@
 ---
+- name: Restart node_exporter socket
+  ansible.builtin.systemd:
+    state: restarted
+    name: node_exporter.socket
+  ignore_errors: '{{ ansible_check_mode }}'
+
 - name: Restart node_exporter service
   ansible.builtin.systemd:
     state: restarted

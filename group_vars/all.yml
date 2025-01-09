@@ -72,4 +72,5 @@ node_exporter_key: '{{ tls_key }}'
 node_exporter_user: '{{ metrics_user }}'
 node_exporter_password_hash: '{{ lookup("ansible.builtin.password",
   "secrets/metrics_password.txt", length=26, encrypt="bcrypt") }}'
+node_exporter_listenstreams: ['{{ ip }}:9100']
 ...

@@ -2,7 +2,9 @@
 Description=Node Exporter
 
 [Socket]
-ListenStream=9100
+{% for listen in node_exporter_listenstreams %}
+ListenStream={{ listen }}
+{% endfor %}
 
 [Install]
 WantedBy=sockets.target

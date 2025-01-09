@@ -23,7 +23,7 @@
 - name: Create node_exporter system user
   ansible.builtin.user:
     name: node_exporter
-    groups: node_exporter
+    group: node_exporter
     append: true
     shell: /usr/sbin/nologin
     system: true
@@ -76,7 +76,7 @@
 
 - name: Update node_exporter web config
   ansible.builtin.template:
-    src: web.yml
+    src: web.yml.j2
     dest: /etc/node_exporter/web.yml
     backup: true
     owner: node_exporter
@@ -92,7 +92,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart node_exporter service
+  notify: Restart node_exporter socket
 
 - name: Install node_exporter systemd service
   ansible.builtin.template:
