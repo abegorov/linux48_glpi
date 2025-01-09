@@ -4,3 +4,4 @@
     state: restarted
     name: node_exporter.service
   ignore_errors: '{{ ansible_check_mode }}'
+...
