@@ -9,10 +9,30 @@ firewalld_override:
 prometheus_ca: '{{ tls_ca }}'
 prometheus_cert: '{{ tls_full }}'
 prometheus_key: '{{ tls_key }}'
+prometheus_user: prometheus
+prometheus_passwordfile: /etc/prometheus/prometheus.passwd
+prometheus_metrics_passwordfile: /etc/prometheus/metrics.passwd
+prometheus_passwords:
+  - file: '{{ prometheus_passwordfile }}'
+    password: '{{ lookup("ansible.builtin.password",
+      "secrets/prometheus_password.txt", length=26) }}'
+  - file: '{{ prometheus_metrics_passwordfile }}'
+    password: '{{ metrics_password }}'
 prometheus_password: '{{ lookup("ansible.builtin.password",
   "secrets/prometheus_password.txt", length=26) }}'
 prometheus_password_hash: '{{ lookup("ansible.builtin.password",
   "secrets/prometheus_password.txt", length=26, encrypt="bcrypt") }}'
-prometheus_metrics_password: '{{ metrics_password }}'
-prometheus_listen: ['127.0.0.1:9090', '{{ ip }}:9090']
+
+prometheus_listen: ['{{ ip }}:9090']
+prometheus_jobs:
+  prometheus:
+    hosts: ['{{ inventory_hostname }}']
+    port: 9090
+    username: '{{ prometheus_user }}'
+    password_file: '{{ prometheus_password_file }}'
+  node:
+    hosts: '{{ groups["all"] }}'
+    port: 9100
+    username: '{{ metrics_user }}'
+    password_file: '{{ prometheus_metrics_passwordfile }}'
 ...
