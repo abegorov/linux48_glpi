@@ -1,0 +1,120 @@
+---
+- name: Check if node_exporter is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/node_exporter
+  changed_when: false
+  check_mode: false
+  register: node_exporter_is_installed
+
+- name: Check current node_exporter version
+  ansible.builtin.command: /usr/local/bin/node_exporter --version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: node_exporter_is_installed.stat.exists
+  register: node_exporter_current_version
+
+- name: Create node_exporter system group
+  ansible.builtin.group:
+    name: node_exporter
+    state: present
+    system: true
+
+- name: Create node_exporter system user
+  ansible.builtin.user:
+    name: node_exporter
+    groups: node_exporter
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    home: /var/lib/node_exporter
+    createhome: true
+
+- name: Download and unarchive node_exporter release binary
+  ansible.builtin.unarchive:
+    src: "{{ node_exporter_download_url }}"
+    dest: /usr/local/bin/
+    include:
+      - node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter
+    remote_src: true
+    extra_opts: --strip-components=1
+    owner: root
+    group: root
+    mode: '0755'
+  when: not node_exporter_is_installed.stat.exists
+    or node_exporter_version not in
+      node_exporter_current_version.stdout_lines | first
+  notify: Restart node_exporter service
+
+- name: Create node_exporter config directory
+  ansible.builtin.file:
+    path: /etc/node_exporter
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update node_exporter certificate file
+  ansible.builtin.copy:
+    content: '{{ node_exporter_cert }}'
+    dest: '{{ node_exporter_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart node_exporter service
+
+- name: Update node_exporter key file
+  ansible.builtin.copy:
+    content: '{{ node_exporter_key }}'
+    dest: '{{ node_exporter_keyfile }}'
+    owner: node_exporter
+    group: node_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart node_exporter service
+
+- name: Update node_exporter web config
+  ansible.builtin.template:
+    src: web.yml
+    dest: /etc/node_exporter/web.yml
+    backup: true
+    owner: node_exporter
+    group: node_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart node_exporter service
+
+- name: Install node_exporter systemd socket
+  ansible.builtin.template:
+    src: node_exporter.socket
+    dest: /etc/systemd/system/node_exporter.socket
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart node_exporter service
+
+- name: Install node_exporter systemd service
+  ansible.builtin.template:
+    src: node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart node_exporter service
+
+- name: Enable and start node_exporter socket
+  ansible.builtin.systemd:
+    name: node_exporter.socket
+    enabled: true
+    daemon_reload: true
+    state: started
+  when: not ansible_check_mode
+
+- name: Enable and start node_exporter service
+  ansible.builtin.systemd:
+    name: node_exporter.service
+    enabled: true
+    daemon_reload: true
+    state: started
+  when: not ansible_check_mode

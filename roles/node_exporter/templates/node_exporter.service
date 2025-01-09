@@ -1,0 +1,28 @@
+[Unit]
+Description=Node Exporter
+Requires=node_exporter.socket
+
+[Service]
+Type=exec
+User=node_exporter
+Group=node_exporter
+ExecStart=/usr/local/bin/node_exporter \
+  --web.systemd-socket \
+  --web.config.file=/etc/node_exporter/web.yml
+TimeoutStopSec=20s
+SendSIGKILL=no
+
+SyslogIdentifier=node_exporter
+RestartSec=1
+Restart=on-failure
+StartLimitInterval=0
+
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

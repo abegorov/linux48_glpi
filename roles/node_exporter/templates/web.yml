@@ -1,0 +1,7 @@
+---
+tls_server_config:
+  cert_file: '{{ node_exporter_certfile }}'
+  key_file: '{{ node_exporter_keyfile }}'
+basic_auth_users:
+  {{ node_exporter_user }}: '{{ node_exporter_password_hash }}'
+...
