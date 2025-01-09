@@ -85,3 +85,11 @@
   gather_facts: false
   roles:
     - glpi_agent
+
+- name: Monitoring provision
+  tags: monitor
+  hosts: monitor
+  become: true
+  gather_facts: false
+  roles:
+    - prometheus
