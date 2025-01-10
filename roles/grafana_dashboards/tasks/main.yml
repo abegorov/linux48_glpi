@@ -1,0 +1,9 @@
+---
+- name: Synchronize dashboards with remote
+  ansible.builtin.copy:
+    src: '{{ role_path + "/files/" }}'
+    dest: /var/lib/grafana/dashboards/
+    owner: grafana
+    group: grafana
+    directory_mode: '0755'
+    mode: '0644'
