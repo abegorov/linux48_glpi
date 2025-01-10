@@ -7,7 +7,6 @@
     group: root
     mode: '0644'
   diff: false
-  when: glpi_db_ca
 
 - name: Update GLPI tls certificate
   ansible.builtin.copy:
@@ -17,7 +16,6 @@
     group: root
     mode: '0644'
   diff: false
-  when: glpi_db_cert
 
 - name: Update GLPI tls key
   ansible.builtin.copy:
@@ -27,5 +25,4 @@
     group: glpi
     mode: '0640'
   no_log: '{{ not debug }}'
-  when: glpi_db_key
 ...
