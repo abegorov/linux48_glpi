@@ -94,3 +94,4 @@
   roles:
     - prometheus
     - grafana
+    - grafana_dashboards
