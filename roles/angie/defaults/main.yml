@@ -13,7 +13,7 @@ angie_glpi_sock: /run/php-fpm/glpi.sock
 angie_glpi_server_name: glpi
 
 angie_frontend_listen: ['443']
-angie_frontend_upstreams: '{{ undef() }}'
+angie_frontend_upstreams: '{{ undef(hint="angie_frontend_upstreams") }}'
 
 angie_metrics_listen: ['9913']
 ...
