@@ -1,0 +1,31 @@
+---
+grafana_version: '11.4.0'
+grafana_subver: '-1'
+grafana_download_url: "https://dl.grafana.com/oss/release/\
+  grafana-{{ grafana_version }}{{ grafana_subver }}.x86_64.rpm"
+
+grafana_cert: '{{ undef(hint="grafana_cert") }}'
+grafana_certfile: /etc/grafana/server.crt
+grafana_key: '{{ undef(hint="grafana_key") }}'
+grafana_keyfile: /etc/grafana/server.key
+
+grafana_admin_user: grafana
+grafana_admin_password: '{{ undef(hint="grafana_admin_password") }}'
+
+grafana_db_host: '{{ undef(hint="grafana_db_host") }}'
+grafana_db_user: grafana
+grafana_db_password: '{{ undef(hint="grafana_db_password") }}'
+grafana_db_name: grafana
+grafana_db_ca: '{{ undef(hint="grafana_db_ca") }}'
+grafana_db_cafile: /etc/grafana/dbca.crt
+grafana_db_cert: '{{ undef(hint="grafana_db_cert") }}'
+grafana_db_certfile: /etc/grafana/dbclient.crt
+grafana_db_key: '{{ undef(hint="grafana_db_key") }}'
+grafana_db_keyfile: /etc/grafana/dbclient.key
+
+grafana_ds_prometheus_uid: adz4zn96lcqv4f
+grafana_ds_prometheus_url: https://127.0.0.1:9090
+grafana_ds_prometheus_ca: '{{ undef(hint="grafana_ds_prometheus_ca") }}'
+grafana_ds_prometheus_password: '{{
+  undef(hint="grafana_ds_prometheus_password") }}'
+...

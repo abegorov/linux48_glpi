@@ -1,0 +1,51 @@
+---
+- name: Update grafana certificate file
+  ansible.builtin.copy:
+    content: '{{ grafana_cert }}'
+    dest: '{{ grafana_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service grafana-server
+
+- name: Update grafana key file
+  ansible.builtin.copy:
+    content: '{{ grafana_key }}'
+    dest: '{{ grafana_keyfile }}'
+    owner: root
+    group: grafana
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service grafana-server
+
+- name: Update grafana db ca certificate
+  ansible.builtin.copy:
+    content: '{{ grafana_db_ca }}'
+    dest: '{{ grafana_db_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service grafana-server
+
+- name: Update grafana db certificate
+  ansible.builtin.copy:
+    content: '{{ grafana_db_cert }}'
+    dest: '{{ grafana_db_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service grafana-server
+
+- name: Update grafana db key
+  ansible.builtin.copy:
+    content: '{{ grafana_db_key }}'
+    dest: '{{ grafana_db_keyfile }}'
+    owner: root
+    group: grafana
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service grafana-server
+...

@@ -1,0 +1,35 @@
+---
+- name: Check if grafana is installed
+  ansible.builtin.stat:
+    path: /usr/sbin/grafana-server
+  changed_when: false
+  check_mode: false
+  register: grafana_server_stat
+
+- name: Check current grafana version
+  ansible.builtin.command: /usr/sbin/grafana-server --version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: grafana_server_stat.stat.exists
+  register: grafana_current_version
+
+- name: Install grafana package
+  ansible.builtin.dnf:
+    name: '{{ grafana_download_url }}'
+    disable_gpg_check: true
+    state: present
+  when: not grafana_server_stat.stat.exists
+    or grafana_version not in grafana_current_version.stdout_lines | first
+
+# На RHEL9 невозможно запустить Grafana с ошибкой:
+# Synchronizing state of grafana-server.service with SysV service script
+# with /usr/lib/systemd/systemd-sysv-install.
+# Executing: /usr/lib/systemd/systemd-sysv-install enable grafana-server
+# Failed to execute /usr/lib/systemd/systemd-sysv-install:
+# No such file or directory
+- name: Remove grafana init script
+  ansible.builtin.file:
+    path: /etc/rc.d/init.d/grafana-server
+    state: absent
+...

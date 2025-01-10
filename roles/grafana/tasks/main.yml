@@ -1,0 +1,16 @@
+---
+- name: Import install tasks
+  ansible.builtin.import_tasks: install.yml
+
+- name: Import certs tasks
+  ansible.builtin.import_tasks: certs.yml
+
+- name: Import config tasks
+  ansible.builtin.import_tasks: config.yml
+
+- name: Enable and start grafana-server service
+  ansible.builtin.systemd:
+    name: grafana-server.service
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'

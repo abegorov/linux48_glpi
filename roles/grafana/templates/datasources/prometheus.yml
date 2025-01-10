@@ -1,0 +1,30 @@
+---
+apiVersion: 1
+prune: true
+datasources:
+  - name: prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    uid: '{{ grafana_ds_prometheus_uid }}'
+    url: '{{ grafana_ds_prometheus_url }}'
+    basicAuth: true
+    basicAuthUser: prometheus
+    withCredentials: false
+    isDefault: true
+    jsonData:
+      defaultEditor: code
+      httpMethod: POST
+      incrementalQuerying: true
+      oauthPassThru: false
+      prometheusType: Prometheus
+      prometheusVersion: '2.50.1'
+      sigV4Auth: false
+      timeInterval: 10s
+      tlsAuthWithCACert: true
+    secureJsonData:
+      tlsCACert: |
+        {{ grafana_ds_prometheus_ca | indent(width=8) }}
+      basicAuthPassword: '{{ grafana_ds_prometheus_password }}'
+    version: 1
+    editable: false
