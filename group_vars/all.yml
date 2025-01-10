@@ -75,4 +75,9 @@ node_exporter_password_hash: '{{ lookup("ansible.builtin.password",
 node_exporter_listenstreams: ['{{ ip }}:9100']
 
 prometheus_ip: '{{ ip }}'
+
+grafana_db_user: grafana
+grafana_db_password: '{{ lookup("ansible.builtin.password",
+  "secrets/mariadb_grafana_password.txt", length=26) }}'
+grafana_db_name: grafana
 ...
