@@ -93,3 +93,4 @@
   gather_facts: false
   roles:
     - prometheus
+    - grafana
