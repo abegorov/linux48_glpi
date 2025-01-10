@@ -1,4 +1,7 @@
 ---
+prometheus_labels:
+  group: 'mariadb'
+
 firewalld_override:
   public:
     add_ports: ['9104/tcp']

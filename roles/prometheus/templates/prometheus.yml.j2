@@ -17,5 +17,8 @@ scrape_configs:
         - targets: ['{{ hostvars[host].prometheus_ip }}:{{ job.port }}']
           labels:
             instance: '{{ host }}'
+            {% for label, value in hostvars[host].prometheus_labels.items() %}
+            {{ label }}: '{{ value }}'
+            {% endfor %}
       {% endfor %}
   {% endfor %}
