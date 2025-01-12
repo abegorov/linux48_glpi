@@ -1,0 +1,25 @@
+---
+global:
+  resolve_timeout: 1m
+
+receivers:
+  - name: blackhole
+  - name: default
+    telegram_configs:
+      - chat_id: {{ alertmanager_telegram_chatid }}
+        bot_token: '{{ alertmanager_telegram_token }}'
+
+route:
+  receiver: default
+  group_by:  ['severity', 'alertgroup', 'alertname', 'group', 'job']
+  group_wait: 1m
+  group_interval: 1m
+  repeat_interval: 1d
+  routes:
+    - matchers: [severity=~"critical|high|disaster"]
+      repeat_interval: 1h
+      continue: true
+
+    - matchers:
+        - severity="none"
+      receiver: blackhole

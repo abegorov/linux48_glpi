@@ -1,0 +1,31 @@
+---
+- name: Install mysqld_exporter systemd service
+  ansible.builtin.template:
+    src: alertmanager.service
+    dest: /etc/systemd/system/alertmanager.service
+    lstrip_blocks: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart service alertmanager
+
+- name: Update alertmanager config
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: '{{ alertmanager_config }}'
+    owner: root
+    group: alertmanager
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service alertmanager
+
+- name: Update alertmanager web config
+  ansible.builtin.template:
+    src: web.yml.j2
+    dest: '{{ alertmanager_web_config }}'
+    owner: root
+    group: alertmanager
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service alertmanager
+...

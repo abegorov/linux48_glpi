@@ -1,0 +1,21 @@
+---
+- name: Update alertmanager certificate file
+  ansible.builtin.copy:
+    content: '{{ alertmanager_cert }}'
+    dest: '{{ alertmanager_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service alertmanager
+
+- name: Update alertmanager key file
+  ansible.builtin.copy:
+    content: '{{ alertmanager_key }}'
+    dest: '{{ alertmanager_keyfile }}'
+    owner: root
+    group: alertmanager
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service alertmanager
+...

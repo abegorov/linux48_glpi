@@ -1,0 +1,56 @@
+---
+- name: Check if alertmanager is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/alertmanager
+  changed_when: false
+  check_mode: false
+  register: alertmanager_is_installed
+
+- name: Check current alertmanager version
+  ansible.builtin.command: /usr/local/bin/alertmanager --version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: alertmanager_is_installed.stat.exists
+  register: alertmanager_current_version
+
+- name: Create alertmanager system group
+  ansible.builtin.group:
+    name: alertmanager
+    state: present
+    system: true
+
+- name: Create alertmanager system user
+  ansible.builtin.user:
+    name: alertmanager
+    group: alertmanager
+    shell: /usr/sbin/nologin
+    system: true
+    home: /var/lib/alertmanager
+    createhome: true
+
+- name: Download and unarchive alertmanager release binary
+  ansible.builtin.unarchive:
+    src: "{{ alertmanager_download_url }}"
+    dest: /usr/local/bin/
+    include:
+      - alertmanager-{{ alertmanager_version }}.linux-amd64/alertmanager
+      - alertmanager-{{ alertmanager_version }}.linux-amd64/amtool
+    remote_src: true
+    extra_opts: --strip-components=1
+    owner: root
+    group: root
+    mode: '0755'
+  when: not alertmanager_is_installed.stat.exists
+    or alertmanager_version not in
+      alertmanager_current_version.stdout_lines | first
+  notify: Restart service alertmanager
+
+- name: Create alertmanager config directory
+  ansible.builtin.file:
+    path: '{{ alertmanager_config_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+...

@@ -1,0 +1,7 @@
+---
+- name: Restart service alertmanager
+  ansible.builtin.systemd:
+    state: restarted
+    name: alertmanager.service
+  ignore_errors: '{{ ansible_check_mode }}'
+...

@@ -1,0 +1,42 @@
+[Unit]
+Description=Prometheus Alertmanager
+After=network-online.target
+StartLimitInterval=0
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+PIDFile=/var/run/alertmanager.pid
+User=alertmanager
+Group=alertmanager
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStart=/usr/local/bin/alertmanager \
+  --config.file={{ alertmanager_config | ansible.builtin.quote }} \
+  --storage.path=/var/lib/alertmanager \
+  {% for listen in alertmanager_listen %}
+  --web.listen-address={{ listen | ansible.builtin.quote }} \
+  {% endfor %}
+  --web.config.file={{ alertmanager_web_config | ansible.builtin.quote }}
+
+SyslogIdentifier=alertmanager
+Restart=always
+RestartSec=5
+
+CapabilityBoundingSet=CAP_SET_UID
+LockPersonality=true
+NoNewPrivileges=true
+MemoryDenyWriteExecute=true
+PrivateTmp=true
+ProtectHome=true
+ReadWriteDirectories=/var/lib/alertmanager
+RemoveIPC=true
+RestrictSUIDSGID=true
+
+PrivateUsers=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

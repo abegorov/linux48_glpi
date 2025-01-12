@@ -1,0 +1,24 @@
+---
+alertmanager_version: 0.27.0
+alertmanager_download_url: "https://github.com/prometheus/alertmanager\
+  /releases/download/v{{ alertmanager_version }}\
+  /alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz"
+
+alertmanager_config_dir: /etc/alertmanager
+alertmanager_config: '{{ alertmanager_config_dir }}/alertmanager.yml'
+alertmanager_web_config: '{{ alertmanager_config_dir }}/web.yml'
+
+alertmanager_cert: '{{ undef(hint="alertmanager_cert") }}'
+alertmanager_certfile: '{{ alertmanager_config_dir }}/server.crt'
+alertmanager_key: '{{ undef(hint="alertmanager_key") }}'
+alertmanager_keyfile: '{{ alertmanager_config_dir }}/server.key'
+
+alertmanager_listen: ['0.0.0.0:9093']
+
+alertmanager_user: alertmanager
+alertmanager_password_hash: '{{ undef(hint="alertmanager_password_hash") }}'
+
+alertmanager_telegram_chatid: '{{
+  undef(hint="alertmanager_telegram_chatid") }}'
+alertmanager_telegram_token: '{{ undef(hint="alertmanager_telegram_token") }}'
+...
