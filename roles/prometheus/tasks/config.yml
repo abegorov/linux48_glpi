@@ -12,7 +12,7 @@
 - name: Update prometheus config
   ansible.builtin.template:
     src: prometheus.yml.j2
-    dest: /etc/prometheus/prometheus.yml
+    dest: '{{ prometheus_config }}'
     lstrip_blocks: true
     owner: root
     group: root
@@ -22,10 +22,32 @@
 - name: Update prometheus web config
   ansible.builtin.template:
     src: web.yml.j2
-    dest: /etc/prometheus/web.yml
+    dest: '{{ prometheus_web_config }}'
     owner: prometheus
     group: prometheus
     mode: '0640'
   no_log: true
   notify: Reload prometheus service
+
+- name: Create rules directory
+  ansible.builtin.file:
+    path: '{{ prometheus_rules_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update prometheus alert rules
+  ansible.builtin.template:
+    src: 'rules/{{ item }}'
+    dest: '{{ prometheus_rules_dir }}/{{ item }}'
+    owner: root
+    group: root
+    mode: '0644'
+  loop: '{{
+      query(
+        "ansible.builtin.fileglob",
+        "/".join((role_path, "templates/rules/*.yml"))
+      ) | map("ansible.builtin.basename")
+    }}'  # noqa: jinja[spacing]
 ...

@@ -4,17 +4,21 @@ prometheus_download_url: "https://github.com/prometheus/prometheus/releases\
   /download/v{{ prometheus_version }}\
   /prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
 
+prometheus_config_dir: /etc/prometheus
+prometheus_config: '{{ prometheus_config_dir }}/prometheus.yml'
+prometheus_web_config: '{{ prometheus_config_dir }}/web.yml'
+
 prometheus_ca: '{{ undef(hint="prometheus_ca") }}'
-prometheus_cafile: /etc/prometheus/ca.crt
+prometheus_cafile: '{{ prometheus_config_dir }}/ca.crt'
 prometheus_cert: '{{ undef(hint="prometheus_cert") }}'
-prometheus_certfile: /etc/prometheus/server.crt
+prometheus_certfile: '{{ prometheus_config_dir }}/server.crt'
 prometheus_key: '{{ undef(hint="prometheus_key") }}'
-prometheus_keyfile: /etc/prometheus/server.key
+prometheus_keyfile: '{{ prometheus_config_dir }}/server.key'
 
 prometheus_user: prometheus
-prometheus_password_file: /etc/prometheus/prometheus.passwd
+prometheus_password_file: '{{ prometheus_config_dir }}/prometheus.passwd'
 prometheus_password_hash: '{{ undef(hint="prometheus_password_hash") }}'
-prometheus_metrics_passwordfile: /etc/prometheus/metrics.passwd
+prometheus_metrics_passwordfile: '{{ prometheus_config_dir }}/metrics.passwd'
 
 prometheus_retention_time: 7d
 prometheus_retention_size: 2GB
@@ -29,4 +33,11 @@ prometheus_jobs:
 prometheus_passwords:
   - file: '{{ prometheus_password_file }}'
     password: '{{ undef(hint="prometheus_password") }}'
+
+prometheus_alertmanager: '127.0.0.1:9093'
+prometheus_alertmanager_username: alertmanager
+prometheus_alertmanager_passwordfile: '{{
+  prometheus_config_dir }}/alertmanager.passwd'
+
+prometheus_rules_dir: '{{ prometheus_config_dir }}/rules'
 ...

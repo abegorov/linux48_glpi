@@ -33,7 +33,7 @@
 
 - name: Create prometheus config directory
   ansible.builtin.file:
-    path: /etc/prometheus
+    path: '{{ prometheus_config_dir }}'
     state: directory
     owner: root
     group: root

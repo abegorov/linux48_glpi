@@ -3,6 +3,20 @@ global:
   scrape_interval: 10s
   evaluation_interval: 1m
 
+alerting:
+  alertmanagers:
+    - scheme: https
+      tls_config:
+        ca_file: '{{ prometheus_cafile }}'
+      basic_auth:
+        username: '{{ prometheus_alertmanager_username }}'
+        password_file: '{{ prometheus_alertmanager_passwordfile }}'
+      static_configs:
+        - targets: ['{{ prometheus_alertmanager }}']
+
+rules_files:
+  - '{{ prometheus_rules_dir }}/*.yml'
+
 scrape_configs:
   {% for name, job in prometheus_jobs.items() %}
   - job_name: '{{ name }}'
