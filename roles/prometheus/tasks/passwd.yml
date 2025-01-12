@@ -8,5 +8,5 @@
     mode: '0640'
   loop: '{{ prometheus_passwords }}'
   no_log: '{{ not debug }}'
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 ...

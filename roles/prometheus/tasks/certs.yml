@@ -7,7 +7,7 @@
     group: root
     mode: '0644'
   diff: false
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 
 - name: Update prometheus certificate file
   ansible.builtin.copy:
@@ -17,7 +17,7 @@
     group: root
     mode: '0644'
   diff: false
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 
 - name: Update prometheus key file
   ansible.builtin.copy:
@@ -27,5 +27,5 @@
     group: prometheus
     mode: '0640'
   no_log: '{{ not debug }}'
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 ...

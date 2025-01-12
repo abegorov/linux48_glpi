@@ -29,7 +29,7 @@
   when: not prometheus_is_installed.stat.exists
     or prometheus_version not in
       prometheus_current_version.stdout_lines | first
-  notify: Restart prometheus service
+  notify: Restart service prometheus
 
 - name: Create prometheus config directory
   ansible.builtin.file:

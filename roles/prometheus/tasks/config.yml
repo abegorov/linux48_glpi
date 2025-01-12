@@ -7,7 +7,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart prometheus service
+  notify: Restart service prometheus
 
 - name: Update prometheus config
   ansible.builtin.template:
@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 
 - name: Update prometheus web config
   ansible.builtin.template:
@@ -27,7 +27,7 @@
     group: prometheus
     mode: '0640'
   no_log: true
-  notify: Reload prometheus service
+  notify: Reload service prometheus
 
 - name: Create rules directory
   ansible.builtin.file:
@@ -50,4 +50,5 @@
         "/".join((role_path, "templates/rules/*.yml"))
       ) | map("ansible.builtin.basename")
     }}'  # noqa: jinja[spacing]
+  notify: Reload service prometheus
 ...
