@@ -5,6 +5,7 @@
   become: true
   gather_facts: false
   roles:
+    - nmcli
     - firewalld
     - tls_gen
     - trust_ca
