@@ -54,7 +54,7 @@ prometheus_jobs:
 
 grafana_cert: '{{ tls_full }}'
 grafana_key: '{{ tls_key }}'
-grafana_admin_user: grafana
+grafana_admin_user: admin
 grafana_admin_password: '{{ lookup("ansible.builtin.password",
   "secrets/grafana_password.txt", length=26) }}'
 grafana_db_host: '{{ hostvars["primary"].ip }}'
