@@ -18,14 +18,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 2,
+  "id": 5,
   "links": [],
   "panels": [
     {
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -99,22 +99,25 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
-          "expr": "sum without(cpu, mode)(rate(node_cpu_seconds_total{mode!~\"idle|iowait\"}[$__rate_interval]))\n/\ncount without(cpu, mode)(count without(mode)(node_cpu_seconds_total))",
+          "expr": "sum without(cpu, mode)(rate(node_cpu_seconds_total{\n    job=~\"$job\", group=~\"$group\", instance=~\"$instance\", mode!~\"idle|iowait\"\n}[$__rate_interval]))\n/\ncount without(cpu, mode)(count without(mode)(node_cpu_seconds_total{\n    job=~\"$job\", group=~\"$group\", instance=~\"$instance\"\n}))",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -128,7 +131,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -202,23 +205,26 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "1 - (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_SReclaimable_bytes)/node_memory_MemTotal_bytes",
+          "expr": "1 - (\n    node_memory_MemFree_bytes{job=~\"$job\", group=~\"$group\", instance=~\"$instance\"}\n    + \n    node_memory_Cached_bytes{job=~\"$job\", group=~\"$group\", instance=~\"$instance\"}\n    + \n    node_memory_SReclaimable_bytes{job=~\"$job\", group=~\"$group\", instance=~\"$instance\"}\n)/node_memory_MemTotal_bytes{job=~\"$job\", group=~\"$group\", instance=~\"$instance\"}",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -232,7 +238,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -306,23 +312,26 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(node_disk_read_bytes_total[$__rate_interval])",
+          "expr": "rate(\n    node_disk_read_bytes_total{\n        job=~\"$job\", group=~\"$group\", instance=~\"$instance\"\n    }[$__rate_interval]\n)",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -336,7 +345,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -410,23 +419,26 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "rate(node_disk_written_bytes_total[$__rate_interval])",
+          "expr": "rate(\n    node_disk_written_bytes_total{\n        job=~\"$job\", group=~\"$group\", instance=~\"$instance\"\n    }[$__rate_interval]\n)",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -440,7 +452,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -514,23 +526,26 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "8*sum without(device)(rate(node_network_receive_bytes_total[$__rate_interval]))",
+          "expr": "8*sum without(device)(\n    rate(\n        node_network_receive_bytes_total{\n            job=~\"$job\", group=~\"$group\", instance=~\"$instance\"\n        }[$__rate_interval]\n    )\n)",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -544,7 +559,7 @@
       "datasource": {
         "default": true,
         "type": "prometheus",
-        "uid": "{{ grafana_dashboards_ds_uid }}"
+        "uid": "[[ grafana_dashboards_ds_uid ]]"
       },
       "fieldConfig": {
         "defaults": {
@@ -618,23 +633,26 @@
             "last"
           ],
           "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Last",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "{{ grafana_dashboards_ds_uid }}"
+            "uid": "[[ grafana_dashboards_ds_uid ]]"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "8*sum without(device)(rate(node_network_transmit_bytes_total[$__rate_interval]))",
+          "expr": "8*sum without(device)(\n    rate(\n        node_network_transmit_bytes_total{\n            job=~\"$job\", group=~\"$group\", instance=~\"$instance\"\n        }[$__rate_interval]\n    )\n)",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -645,11 +663,82 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
-  "schemaVersion": 39,
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(node_exporter_build_info,job)",
+        "includeAll": true,
+        "label": "Job",
+        "multi": true,
+        "name": "job",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(node_exporter_build_info,job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(node_exporter_build_info{job=~\"$job\"},group)",
+        "includeAll": true,
+        "label": "Group",
+        "multi": true,
+        "name": "group",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(node_exporter_build_info{job=~\"$job\"},group)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "definition": "label_values(node_exporter_build_info{job=~\"$job\", group=~\"$group\"},instance)",
+        "includeAll": true,
+        "label": "Instance",
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(node_exporter_build_info{job=~\"$job\", group=~\"$group\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -669,8 +758,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "summary",
-  "uid": "edz5y92drtbswa",
-  "version": 12,
+  "title": "Summary",
+  "uid": "ee9rrdzluzzeof",
+  "version": 14,
   "weekStart": "monday"
 }
