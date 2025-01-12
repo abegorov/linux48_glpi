@@ -35,7 +35,7 @@ mysqld_exporter_db_password: '{{ mariadb_exporter_password }}'
 mysqld_exporter_db_ca: '{{ tls_ca }}'
 mysqld_exporter_db_cert: '{{ tls_cert }}'
 mysqld_exporter_db_key: '{{ tls_key }}'
-mysqld_exporter_listen: '{{ ip }}:9104'
+mysqld_exporter_listen: '{{ prometheus_ip }}:9104'
 mysqld_exporter_user: '{{ metrics_user }}'
 mysqld_exporter_password_hash: '{{ metrics_password_hash }}'
 ...

@@ -40,13 +40,24 @@ prometheus_alertmanager: '127.0.0.1:9093'
 prometheus_alertmanager_username: '{{ alertmanager_user }}'
 prometheus_alertmanager_passwordfile: /etc/prometheus/alertmanager.passwd
 
-prometheus_listen: ['{{ ip }}:9090']
+prometheus_ip: '127.0.0.1'
+prometheus_listen: ['127.0.0.1:9090', '{{ ip }}:9090']
 prometheus_jobs:
   prometheus:
     hosts: ['{{ inventory_hostname }}']
     port: 9090
     username: '{{ prometheus_user }}'
     password_file: '{{ prometheus_password_file }}'
+  alertmanager:
+    hosts: ['{{ inventory_hostname }}']
+    port: 9093
+    username: '{{ prometheus_alertmanager_username }}'
+    password_file: '{{ prometheus_alertmanager_passwordfile }}'
+  mysql:
+    hosts: '{{ groups["mariadb"] }}'
+    port: 9104
+    username: '{{ metrics_user }}'
+    password_file: '{{ prometheus_metrics_passwordfile }}'
   node:
     hosts: '{{ groups["all"] }}'
     port: 9100
@@ -63,11 +74,6 @@ prometheus_jobs:
     username: '{{ metrics_user }}'
     password_file: '{{ prometheus_metrics_passwordfile }}'
     metrics_path: /_prometheus/metrics
-  mysql:
-    hosts: '{{ groups["mariadb"] }}'
-    port: 9104
-    username: '{{ metrics_user }}'
-    password_file: '{{ prometheus_metrics_passwordfile }}'
 
 grafana_cert: '{{ tls_full }}'
 grafana_key: '{{ tls_key }}'

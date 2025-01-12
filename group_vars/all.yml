@@ -50,7 +50,7 @@ angie_passwd:
   metrics:
     - name: '{{ metrics_user }}'
       password: '{{ metrics_password }}'
-angie_metrics_listen: ['{{ ip }}:{{ angie_metrics_port }}']
+angie_metrics_listen: ['{{ prometheus_ip }}:{{ angie_metrics_port }}']
 angie_metrics_port: 9913
 
 glpi_server_name: glpi.otus.abegorov.ru
@@ -82,7 +82,7 @@ node_exporter_cert: '{{ tls_full }}'
 node_exporter_key: '{{ tls_key }}'
 node_exporter_user: '{{ metrics_user }}'
 node_exporter_password_hash: '{{ metrics_password_hash }}'
-node_exporter_listenstreams: ['{{ ip }}:9100']
+node_exporter_listenstreams: ['{{ prometheus_ip }}:9100']
 
 grafana_db_user: grafana
 grafana_db_password: '{{ lookup("ansible.builtin.password",
