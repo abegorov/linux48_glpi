@@ -2,6 +2,11 @@
 ansible_python_interpreter: /usr/bin/python3
 debug: false
 
+nmcli_connections_default:
+  - conn_name: lan
+    ifname: eth1
+    ip4: '{{ ip }}/24'
+
 prometheus_ip: '{{ ip }}'
 prometheus_labels:
   group: '{{ inventory_hostname }}'
@@ -70,12 +75,13 @@ opensearch_rsyslog_password_file: "secrets/opensearch_rsyslog_password.txt"
 metrics_user: metrics
 metrics_password: '{{ lookup("ansible.builtin.password",
   "secrets/metrics_password.txt", length=26) }}'
+metrics_password_hash: '{{ lookup("ansible.builtin.password",
+  "secrets/metrics_password.txt", length=26, encrypt="bcrypt") }}'
 
 node_exporter_cert: '{{ tls_full }}'
 node_exporter_key: '{{ tls_key }}'
 node_exporter_user: '{{ metrics_user }}'
-node_exporter_password_hash: '{{ lookup("ansible.builtin.password",
-  "secrets/metrics_password.txt", length=26, encrypt="bcrypt") }}'
+node_exporter_password_hash: '{{ metrics_password_hash }}'
 node_exporter_listenstreams: ['{{ ip }}:9100']
 
 grafana_db_user: grafana

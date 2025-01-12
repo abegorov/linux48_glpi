@@ -27,12 +27,15 @@ opensearch_users:
     hash: '{{ lookup("ansible.builtin.password",
       opensearch_kibanaserver_password_file, length=26, encrypt="bcrypt") }}'
     reserved: true
+  metrics:
+    hash: '{{ metrics_password_hash }}'
+    reserved: true
+    backend_roles: [metrics]
   rsyslog:
     hash: '{{ lookup("ansible.builtin.password",
       opensearch_rsyslog_password_file, length=26, encrypt="bcrypt") }}'
     reserved: false
     backend_roles: [syslog]
-
 
 opensearch_version: '2.17.1'
 opensearch_syslog_indexes: [audit, glpi, nginx, syslog]

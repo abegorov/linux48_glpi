@@ -2,10 +2,14 @@
 ip: '192.168.57.18'
 ip_external: '192.168.56.18'
 
+nmcli_connections_add:
+  - conn_name: wan
+    ifname: eth2
+    ip4: '{{ ip_external }}/24'
+
 firewalld_override:
   public:
     add_ports: ['{{ angie_metrics_port }}/tcp']
-    add_services: [http, https]
   dmz:
     interfaces: [eth2]
     add_services: [http, https]
