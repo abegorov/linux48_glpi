@@ -72,7 +72,7 @@
     group: node_exporter
     mode: '0640'
   no_log: '{{ not debug }}'
-  notify: Restart node_exporter service
+  notify: Restart service node_exporter
 
 - name: Update node_exporter web config
   ansible.builtin.template:
@@ -82,7 +82,7 @@
     group: node_exporter
     mode: '0640'
   no_log: '{{ not debug }}'
-  notify: Restart node_exporter service
+  notify: Restart service node_exporter
 
 - name: Install node_exporter systemd socket
   ansible.builtin.template:
@@ -91,7 +91,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart node_exporter socket
+  notify: Restart socket node_exporter
 
 - name: Install node_exporter systemd service
   ansible.builtin.template:
@@ -100,21 +100,21 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart node_exporter service
+  notify: Restart service node_exporter
 
-- name: Enable and start node_exporter socket
+- name: Enable and start socket node_exporter
   ansible.builtin.systemd:
     name: node_exporter.socket
     enabled: true
     daemon_reload: true
     state: started
-  when: not ansible_check_mode
+  ignore_errors: '{{ ansible_check_mode }}'
 
-- name: Enable and start node_exporter service
+- name: Enable and start service node_exporter
   ansible.builtin.systemd:
     name: node_exporter.service
     enabled: true
     daemon_reload: true
     state: started
-  when: not ansible_check_mode
+  ignore_errors: '{{ ansible_check_mode }}'
 ...
