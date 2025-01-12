@@ -94,6 +94,7 @@
   become: true
   gather_facts: false
   roles:
+    - alertmanager
     - prometheus
     - grafana
     - grafana_dashboards
