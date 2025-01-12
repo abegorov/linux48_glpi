@@ -14,19 +14,10 @@
 - name: Import config tasks
   ansible.builtin.import_tasks: config.yml
 
-- name: Update prometheus systemd service
-  ansible.builtin.template:
-    src: prometheus.service
-    dest: /etc/systemd/system/prometheus.service
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart prometheus service
-
 - name: Enable and start prometheus service
   ansible.builtin.systemd:
     name: prometheus.service
     enabled: true
     daemon_reload: true
     state: started
-  when: not ansible_check_mode
+  ignore_errors: '{{ ansible_check_mode }}'

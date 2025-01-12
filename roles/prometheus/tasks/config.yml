@@ -1,4 +1,14 @@
 ---
+- name: Update prometheus systemd service
+  ansible.builtin.template:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    lstrip_blocks: true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart prometheus service
+
 - name: Update prometheus config
   ansible.builtin.template:
     src: prometheus.yml.j2
