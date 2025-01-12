@@ -6,6 +6,18 @@ firewalld_override:
     add_ports: ['9093/tcp']
     add_services: [prometheus, grafana]
 
+alertmanager_cert: '{{ tls_full }}'
+alertmanager_key: '{{ tls_key }}'
+alertmanager_listen: ['127.0.0.1:9093', '{{ ip }}:9093']
+alertmanager_user: alertmanager
+alertmanager_password: '{{ lookup("ansible.builtin.password",
+  "secrets/alertmanager_password.txt", length=26) }}'
+alertmanager_password_hash: '{{ lookup("ansible.builtin.password",
+  "secrets/alertmanager_password.txt", length=26, encrypt="bcrypt") }}'
+alertmanager_telegram_chatid: -1002405468451
+alertmanager_telegram_token: '{{ lookup("ansible.builtin.file",
+  "secrets/telegram_token.txt") }}'
+
 prometheus_ca: '{{ tls_ca }}'
 prometheus_cert: '{{ tls_full }}'
 prometheus_key: '{{ tls_key }}'
@@ -16,12 +28,17 @@ prometheus_passwords:
   - file: '{{ prometheus_passwordfile }}'
     password: '{{ lookup("ansible.builtin.password",
       "secrets/prometheus_password.txt", length=26) }}'
+  - file: '{{ prometheus_alertmanager_passwordfile }}'
+    password: '{{ alertmanager_password }}'
   - file: '{{ prometheus_metrics_passwordfile }}'
     password: '{{ metrics_password }}'
 prometheus_password: '{{ lookup("ansible.builtin.password",
   "secrets/prometheus_password.txt", length=26) }}'
 prometheus_password_hash: '{{ lookup("ansible.builtin.password",
   "secrets/prometheus_password.txt", length=26, encrypt="bcrypt") }}'
+prometheus_alertmanager: '127.0.0.1:9093'
+prometheus_alertmanager_username: '{{ alertmanager_user }}'
+prometheus_alertmanager_passwordfile: /etc/prometheus/alertmanager.passwd
 
 prometheus_listen: ['{{ ip }}:9090']
 prometheus_jobs:
@@ -66,16 +83,4 @@ grafana_ds_prometheus_url: https://{{ ip }}:9090
 grafana_ds_prometheus_ca: '{{ tls_ca }}'
 grafana_ds_prometheus_password: '{{ prometheus_password }}'
 grafana_dashboards_ds_uid: '{{ grafana_ds_prometheus_uid }}'
-
-alertmanager_cert: '{{ tls_full }}'
-alertmanager_key: '{{ tls_key }}'
-alertmanager_listen: ['127.0.0.1:9093', '{{ ip }}:9093']
-alertmanager_user: alertmanager
-alertmanager_password: '{{ lookup("ansible.builtin.password",
-  "secrets/alertmanager_password.txt", length=26) }}'
-alertmanager_password_hash: '{{ lookup("ansible.builtin.password",
-  "secrets/alertmanager_password.txt", length=26, encrypt="bcrypt") }}'
-alertmanager_telegram_chatid: -1002405468451
-alertmanager_telegram_token: '{{ lookup("ansible.builtin.file",
-  "secrets/telegram_token.txt") }}'
 ...
