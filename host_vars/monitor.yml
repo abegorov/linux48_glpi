@@ -65,4 +65,5 @@ grafana_ds_prometheus_uid: adz4zn96lcqv4f
 grafana_ds_prometheus_url: https://{{ ip }}:9090
 grafana_ds_prometheus_ca: '{{ tls_ca }}'
 grafana_ds_prometheus_password: '{{ prometheus_password }}'
+grafana_dashboards_ds_uid: '{{ grafana_ds_prometheus_uid }}'
 ...

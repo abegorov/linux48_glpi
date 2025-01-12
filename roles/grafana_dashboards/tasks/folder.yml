@@ -1,0 +1,23 @@
+---
+- name: Create grafana folder for {{ folder }}
+  ansible.builtin.file:
+    path: /var/lib/grafana/dashboards/{{ folder }}
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: '0755'
+
+- name: Synchronize dashboards for {{ folder }}
+  ansible.builtin.template:
+    src: '{{ folder }}/{{ item }}'
+    dest: /var/lib/grafana/dashboards/{{ folder }}/{{ item }}
+    owner: grafana
+    group: grafana
+    mode: '0644'
+  loop: '{{
+      query(
+        "ansible.builtin.fileglob",
+        "/".join((role_path, "files", folder, "*"))
+      ) | map("ansible.builtin.basename")
+    }}'  # noqa: jinja[spacing]
+...

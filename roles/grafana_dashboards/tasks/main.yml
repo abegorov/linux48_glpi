@@ -1,9 +1,17 @@
 ---
-- name: Synchronize dashboards with remote
-  ansible.builtin.copy:
-    src: '{{ role_path + "/files/" }}'
-    dest: /var/lib/grafana/dashboards/
-    owner: grafana
-    group: grafana
-    directory_mode: '0755'
-    mode: '0644'
+- name: List grafana folders
+  become: false
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.find:
+    paths: '{{ role_path }}/files'
+    recurse: false
+    file_type: directory
+  register: grafana_dashboards_folders
+
+- name: Include grafana folder tasks
+  ansible.builtin.include_tasks: folder.yml
+  loop: '{{ grafana_dashboards_folders.files | map(attribute="path") |
+    map("ansible.builtin.basename") }}'
+  loop_control:
+    loop_var: folder
