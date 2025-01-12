@@ -4,7 +4,7 @@ ip: '192.168.57.11'
 mariadb_config_override:
   server_id: 1
   gtid_domain_id: 1
-  bind_address: '{{ ip }}'
+  bind_address: '127.0.0.1,{{ ip }}'
   ssl_ca: '{{ mariadb_tls_cafile }}'
   ssl_cert: '{{ mariadb_tls_certfile }}'
   ssl_key: '{{ mariadb_tls_keyfile }}'
@@ -27,7 +27,7 @@ mariadb_users_list:
     tls_requires:
       x509:
   - name: '{{ mariadb_exporter_user }}'
-    host: localhost
+    host: '127.0.0.1'
     password: '{{ mariadb_exporter_password }}'
     priv: '*.*:PROCESS,BINLOG MONITOR,SELECT'
     resource_limits:

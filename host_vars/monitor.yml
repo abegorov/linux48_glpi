@@ -46,6 +46,11 @@ prometheus_jobs:
     username: '{{ metrics_user }}'
     password_file: '{{ prometheus_metrics_passwordfile }}'
     metrics_path: /_prometheus/metrics
+  mysql:
+    hosts: '{{ groups["mariadb"] }}'
+    port: 9104
+    username: '{{ metrics_user }}'
+    password_file: '{{ prometheus_metrics_passwordfile }}'
 
 grafana_cert: '{{ tls_full }}'
 grafana_key: '{{ tls_key }}'

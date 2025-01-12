@@ -5,7 +5,7 @@ mariadb_config_override:
   server_id: 2
   gtid_domain_id: 1
   read_only: true
-  bind_address: '{{ ip }}'
+  bind_address: '127.0.0.1,{{ ip }}'
   ssl_ca: '{{ mariadb_tls_cafile }}'
   ssl_cert: '{{ mariadb_tls_certfile }}'
   ssl_key: '{{ mariadb_tls_keyfile }}'
