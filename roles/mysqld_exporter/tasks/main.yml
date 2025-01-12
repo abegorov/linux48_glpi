@@ -14,5 +14,5 @@
     enabled: true
     daemon_reload: true
     state: started
-  when: not ansible_check_mode
+  ignore_errors: '{{ ansible_check_mode }}'
 ...
