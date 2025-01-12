@@ -13,4 +13,13 @@
   ansible.builtin.dnf:
     name: opensearch-{{ opensearch_version }}
     state: present
+
+- name: Install opensearch prometheus plugin
+  ansible.builtin.command: >-
+    /usr/share/opensearch/bin/opensearch-plugin
+    install --batch
+    {{ opensearch_prometheus_download_url }}
+  args:
+    creates: "/usr/share/opensearch/plugins/prometheus-exporter\
+      /plugin-descriptor.properties"
 ...
