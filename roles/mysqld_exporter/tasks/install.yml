@@ -24,7 +24,6 @@
   ansible.builtin.user:
     name: mysqld_exporter
     group: mysqld_exporter
-    append: true
     shell: /usr/sbin/nologin
     system: true
     home: /var/lib/mysqld_exporter

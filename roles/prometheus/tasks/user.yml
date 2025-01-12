@@ -9,7 +9,6 @@
   ansible.builtin.user:
     name: prometheus
     group: prometheus
-    append: true
     shell: /usr/sbin/nologin
     system: true
     home: /var/lib/prometheus

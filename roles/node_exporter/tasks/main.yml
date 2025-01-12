@@ -24,7 +24,6 @@
   ansible.builtin.user:
     name: node_exporter
     group: node_exporter
-    append: true
     shell: /usr/sbin/nologin
     system: true
     home: /var/lib/node_exporter
