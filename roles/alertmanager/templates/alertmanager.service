@@ -6,7 +6,7 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=exec
-PIDFile=/var/run/alertmanager.pid
+PIDFile=/run/alertmanager.pid
 User=alertmanager
 Group=alertmanager
 ExecReload=/bin/kill -HUP $MAINPID
