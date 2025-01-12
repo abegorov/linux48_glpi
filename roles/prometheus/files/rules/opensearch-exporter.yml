@@ -1,0 +1,77 @@
+groups:
+
+- name: OpensearchExporter
+
+  rules:
+
+    - alert: OpensearchHeapUsageTooHigh
+      expr: '(opensearch_jvm_mem_heap_used_bytes / opensearch_jvm_mem_heap_max_bytes) * 100 > 90'
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Opensearch Heap Usage Too High (instance {{ $labels.instance }})
+        description: "The heap usage is over 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHeapUsageWarning
+      expr: '(opensearch_jvm_mem_heap_used_bytes / opensearch_jvm_mem_heap_max_bytes) * 100 > 80'
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Opensearch Heap Usage warning (instance {{ $labels.instance }})
+        description: "The heap usage is over 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchDiskOutOfSpace
+      expr: 'opensearch_fs_path_available_bytes / opensearch_fs_path_total_bytes * 100 < 10'
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Opensearch disk out of space (instance {{ $labels.instance }})
+        description: "The disk usage is over 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchDiskSpaceLow
+      expr: 'opensearch_fs_path_available_bytes / opensearch_fs_path_total_bytes * 100 < 20'
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: Opensearch disk space low (instance {{ $labels.instance }})
+        description: "The disk usage is over 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchClusterRed
+      expr: 'sum by(cluster)(opensearch_cluster_status) / count by(cluster)(opensearch_cluster_nodes_number) > 1'
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Opensearch Cluster Red (instance {{ $labels.instance }})
+        description: "Open Cluster Red status\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchNoNewDocuments
+      expr: 'increase(opensearch_indices_indexing_index_count[10m]) < 1'
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Opensearch no new documents (instance {{ $labels.instance }})
+        description: "No new documents for 10 min!\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHighIndexingRate
+      expr: 'sum(rate(opensearch_indices_indexing_index_count[1m]))> 10000'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Opensearch High Indexing Rate (instance {{ $labels.instance }})
+        description: "The indexing rate on Opensearch cluster is higher than the threshold.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+    - alert: OpensearchHighQueryRate
+      expr: 'sum(rate(opensearch_indices_search_query_count[1m])) > 100'
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Opensearch High Query Rate (instance {{ $labels.instance }})
+        description: "The query rate on Opensearch cluster is higher than the threshold.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
