@@ -1,0 +1,57 @@
+---
+- name: Check if mysqld_exporter is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/mysqld_exporter
+  changed_when: false
+  check_mode: false
+  register: mysqld_exporter_is_installed
+
+- name: Check current mysqld_exporter version
+  ansible.builtin.command: /usr/local/bin/mysqld_exporter --version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: mysqld_exporter_is_installed.stat.exists
+  register: mysqld_exporter_current_version
+
+- name: Create mysqld_exporter system group
+  ansible.builtin.group:
+    name: mysqld_exporter
+    state: present
+    system: true
+
+- name: Create mysqld_exporter system user
+  ansible.builtin.user:
+    name: mysqld_exporter
+    group: mysqld_exporter
+    append: true
+    shell: /usr/sbin/nologin
+    system: true
+    home: /var/lib/mysqld_exporter
+    createhome: true
+
+- name: Download and unarchive mysqld_exporter release binary
+  ansible.builtin.unarchive:
+    src: "{{ mysqld_exporter_download_url }}"
+    dest: /usr/local/bin/
+    include:
+      - mysqld_exporter-{{
+        mysqld_exporter_version }}.linux-amd64/mysqld_exporter
+    remote_src: true
+    extra_opts: --strip-components=1
+    owner: root
+    group: root
+    mode: '0755'
+  when: not mysqld_exporter_is_installed.stat.exists
+    or mysqld_exporter_version not in
+      mysqld_exporter_current_version.stderr_lines | first
+  notify: Restart service mysqld_exporter
+
+- name: Create mysqld_exporter config directory
+  ansible.builtin.file:
+    path: '{{ mysqld_exporter_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+...

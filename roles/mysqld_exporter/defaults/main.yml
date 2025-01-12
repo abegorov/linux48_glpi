@@ -1,0 +1,31 @@
+---
+mysqld_exporter_version: 0.16.0
+mysqld_exporter_download_url: "https://github.com/prometheus/mysqld_exporter\
+  /releases/download/v{{ mysqld_exporter_version }}\
+  /mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
+
+mysqld_exporter_dir: /etc/mysqld_exporter
+
+mysqld_exporter_cert: '{{ undef(hint="mysqld_exporter_cert") }}'
+mysqld_exporter_certfile: '{{ mysqld_exporter_dir }}/server.crt'
+mysqld_exporter_key: '{{ undef(hint="mysqld_exporter_key") }}'
+mysqld_exporter_keyfile: '{{ mysqld_exporter_dir }}/server.key'
+
+mysqld_exporter_db_host: '{{ undef(hint="mysqld_exporter_db_host") }}'
+mysqld_exporter_db_user: exporter
+mysqld_exporter_db_password: '{{ undef(hint="mysqld_exporter_db_password") }}'
+mysqld_exporter_db_ca: '{{ undef(hint="mysqld_exporter_db_ca") }}'
+mysqld_exporter_db_cafile: '{{ mysqld_exporter_dir }}/dbca.crt'
+mysqld_exporter_db_cert: '{{ undef(hint="mysqld_exporter_db_cert") }}'
+mysqld_exporter_db_certfile: '{{ mysqld_exporter_dir }}/dbclient.crt'
+mysqld_exporter_db_key: '{{ undef(hint="mysqld_exporter_db_key") }}'
+mysqld_exporter_db_keyfile: '{{ mysqld_exporter_dir }}/dbclient.key'
+
+mysqld_exporter_listen: '127.0.0.1:9104'
+mysqld_exporter_mysql_config: '{{ mysqld_exporter_dir }}/my.cnf'
+mysqld_exporter_web_config: '{{ mysqld_exporter_dir }}/web.yml'
+
+mysqld_exporter_user: metrics
+mysqld_exporter_password_hash: '{{
+  undef(hint="mysqld_exporter_password_hash") }}'
+...

@@ -1,0 +1,7 @@
+---
+tls_server_config:
+  cert_file: '{{ mysqld_exporter_certfile }}'
+  key_file: '{{ mysqld_exporter_keyfile }}'
+basic_auth_users:
+  {{ mysqld_exporter_user }}: '{{ mysqld_exporter_password_hash }}'
+...

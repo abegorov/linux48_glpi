@@ -1,0 +1,31 @@
+[Unit]
+Description=Node Exporter
+
+[Service]
+Type=exec
+User=mysqld_exporter
+Group=mysqld_exporter
+ExecStart=/usr/local/bin/mysqld_exporter \
+  --config.my-cnf={{ mysqld_exporter_mysql_config |
+      ansible.builtin.quote }} \
+  --web.config.file={{ mysqld_exporter_web_config |
+      ansible.builtin.quote }} \
+  --web.listen-address={{ mysqld_exporter_listen |
+      ansible.builtin.quote }}
+TimeoutStopSec=20s
+SendSIGKILL=no
+
+SyslogIdentifier=mysqld_exporter
+RestartSec=1
+Restart=on-failure
+StartLimitInterval=0
+
+ProtectHome=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target

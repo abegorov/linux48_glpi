@@ -1,0 +1,51 @@
+---
+- name: Update mysqld_exporter certificate file
+  ansible.builtin.copy:
+    content: '{{ mysqld_exporter_cert }}'
+    dest: '{{ mysqld_exporter_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter key file
+  ansible.builtin.copy:
+    content: '{{ mysqld_exporter_key }}'
+    dest: '{{ mysqld_exporter_keyfile }}'
+    owner: root
+    group: mysqld_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter db ca certificate
+  ansible.builtin.copy:
+    content: '{{ mysqld_exporter_db_ca }}'
+    dest: '{{ mysqld_exporter_db_cafile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter db certificate
+  ansible.builtin.copy:
+    content: '{{ mysqld_exporter_db_cert }}'
+    dest: '{{ mysqld_exporter_db_certfile }}'
+    owner: root
+    group: root
+    mode: '0644'
+  diff: false
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter db key
+  ansible.builtin.copy:
+    content: '{{ mysqld_exporter_db_key }}'
+    dest: '{{ mysqld_exporter_db_keyfile }}'
+    owner: root
+    group: mysqld_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service mysqld_exporter
+...

@@ -1,0 +1,30 @@
+---
+- name: Install mysqld_exporter systemd service
+  ansible.builtin.template:
+    src: mysqld_exporter.service
+    dest: /etc/systemd/system/mysqld_exporter.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter mysql config
+  ansible.builtin.template:
+    src: my.cnf
+    dest: '{{ mysqld_exporter_mysql_config }}'
+    owner: mysqld_exporter
+    group: mysqld_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service mysqld_exporter
+
+- name: Update mysqld_exporter web config
+  ansible.builtin.template:
+    src: web.yml.j2
+    dest: '{{ mysqld_exporter_web_config }}'
+    owner: mysqld_exporter
+    group: mysqld_exporter
+    mode: '0640'
+  no_log: '{{ not debug }}'
+  notify: Restart service mysqld_exporter
+...
