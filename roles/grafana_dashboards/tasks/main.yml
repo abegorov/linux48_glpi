@@ -4,7 +4,7 @@
   delegate_to: localhost
   run_once: true
   ansible.builtin.find:
-    paths: '{{ role_path }}/files'
+    paths: '{{ role_path }}/templates'
     recurse: false
     file_type: directory
   register: grafana_dashboards_folders

@@ -11,13 +11,15 @@
   ansible.builtin.template:
     src: '{{ folder }}/{{ item }}'
     dest: /var/lib/grafana/dashboards/{{ folder }}/{{ item }}
+    variable_start_string: '[['
+    variable_end_string: ']]'
     owner: grafana
     group: grafana
     mode: '0644'
   loop: '{{
       query(
         "ansible.builtin.fileglob",
-        "/".join((role_path, "files", folder, "*"))
+        "/".join((role_path, "templates", folder, "*"))
       ) | map("ansible.builtin.basename")
     }}'  # noqa: jinja[spacing]
 ...
