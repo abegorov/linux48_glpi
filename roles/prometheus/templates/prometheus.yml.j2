@@ -14,7 +14,7 @@ alerting:
       static_configs:
         - targets: ['{{ prometheus_alertmanager }}']
 
-rules_files:
+rule_files:
   - '{{ prometheus_rules_dir }}/*.yml'
 
 scrape_configs:
