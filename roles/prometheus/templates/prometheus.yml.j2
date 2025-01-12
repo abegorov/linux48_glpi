@@ -12,6 +12,9 @@ scrape_configs:
     basic_auth:
       username: '{{ job.username }}'
       password_file: '{{ job.password_file }}'
+    {% if job.metrics_path is defined %}
+    metrics_path: {{ job.metrics_path }}
+    {% endif %}
     static_configs:
       {% for host in job.hosts %}
         - targets: ['{{ hostvars[host].prometheus_ip }}:{{ job.port }}']
