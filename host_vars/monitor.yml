@@ -66,4 +66,16 @@ grafana_ds_prometheus_url: https://{{ ip }}:9090
 grafana_ds_prometheus_ca: '{{ tls_ca }}'
 grafana_ds_prometheus_password: '{{ prometheus_password }}'
 grafana_dashboards_ds_uid: '{{ grafana_ds_prometheus_uid }}'
+
+alertmanager_cert: '{{ tls_full }}'
+alertmanager_key: '{{ tls_key }}'
+alertmanager_listen: ['127.0.0.1:9093', '{{ ip }}:9093']
+alertmanager_user: alertmanager
+alertmanager_password: '{{ lookup("ansible.builtin.password",
+  "secrets/alertmanager_password.txt", length=26) }}'
+alertmanager_password_hash: '{{ lookup("ansible.builtin.password",
+  "secrets/alertmanager_password.txt", length=26, encrypt="bcrypt") }}'
+alertmanager_telegram_chatid: -1002405468451
+alertmanager_telegram_token: '{{ lookup("ansible.builtin.file",
+  "secrets/telegram_token.txt") }}'
 ...
