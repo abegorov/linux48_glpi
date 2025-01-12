@@ -38,7 +38,7 @@
     mode: '0755'
 
 - name: Update prometheus alert rules
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: 'rules/{{ item }}'
     dest: '{{ prometheus_rules_dir }}/{{ item }}'
     owner: root
@@ -47,7 +47,7 @@
   loop: '{{
       query(
         "ansible.builtin.fileglob",
-        "/".join((role_path, "templates/rules/*.yml"))
+        "/".join((role_path, "files/rules/*.yml"))
       ) | map("ansible.builtin.basename")
     }}'  # noqa: jinja[spacing]
   notify: Reload service prometheus
