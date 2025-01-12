@@ -1,0 +1,20 @@
+---
+- name: Configure network
+  community.general.nmcli:
+    conn_name: '{{ item.conn_name }}'
+    ifname: '{{ item.ifname }}'
+    ip4: '{{ item.ip4 | default(omit) }}'
+    gw4: '{{ item.gw4 | default(omit) }}'
+    routes4: '{{ item.routes4 | default(omit) }}'
+    routes4_extended: '{{ item.routes4_extended | default(omit) }}'
+    routing_rules4: '{{ item.routing_rules4 | default(omit) }}'
+    gw4_ignore_auto: '{{ item.gw4_ignore_auto | default(omit) }}'
+    type: ethernet
+    state: present
+  loop: '{{ nmcli_connections }}'
+  loop_control:
+    label: '{{ item.conn_name }}'
+  register: nmcli_config_results
+  notify:
+    - Reload network manager configuration
+    - Reapply network configuration

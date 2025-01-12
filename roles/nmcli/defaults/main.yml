@@ -1,0 +1,5 @@
+---
+nmcli_connections_default: []
+nmcli_connections_add: []
+nmcli_connections: '{{ nmcli_connections_default + nmcli_connections_add }}'
+...
