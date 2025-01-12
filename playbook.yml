@@ -53,6 +53,7 @@
     - mariadb_databases
     - mariadb_users
     - mariadb_replica
+    - mysqld_exporter
 
 - name: NFS server provision
   tags: nfs
