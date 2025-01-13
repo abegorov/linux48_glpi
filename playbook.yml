@@ -20,6 +20,7 @@
   roles:
     - opensearch
     - opensearch_dashboards
+    - opensearch_patterns
 
 - name: Rsyslog provision
   tags: rsyslog
@@ -28,6 +29,14 @@
   gather_facts: false
   roles:
     - rsyslog
+
+- name: NFS server provision
+  tags: nfs
+  hosts: [nfs]
+  become: true
+  gather_facts: false
+  roles:
+    - nfs_server
 
 - name: Backup provision
   tags: backup
@@ -54,14 +63,6 @@
     - mariadb_users
     - mariadb_replica
     - mysqld_exporter
-
-- name: NFS server provision
-  tags: nfs
-  hosts: [nfs]
-  become: true
-  gather_facts: false
-  roles:
-    - nfs_server
 
 - name: Frontend and backed provision
   tags: web
