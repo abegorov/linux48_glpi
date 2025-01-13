@@ -61,7 +61,7 @@ MACHINES = {
   :frontend => {
     :intnets => { :lan => { :auto_config => false } },
     :networks => {
-      :private_network => { :ip => '192.168.57.18', :auto_config => false }
+      :private_network => { :ip => '192.168.56.18', :auto_config => false }
     },
     :forwarded_ports => [
       { :id => 'vts',   :guest_ip => '192.168.57.18', :guest => 9913,
