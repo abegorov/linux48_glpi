@@ -1,0 +1,4 @@
+---
+restic_repo_dir: /srv/backup/restic
+restic_repo_password: '{{ undef(hint="restic_repo_password") }}'
+...

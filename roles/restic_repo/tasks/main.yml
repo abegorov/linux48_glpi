@@ -1,0 +1,14 @@
+---
+- name: Install restic
+  ansible.builtin.dnf:
+    name: restic
+    state: present
+
+- name: Init restic repo
+  ansible.builtin.command:
+    cmd: restic init
+    creates: '{{ restic_repo_dir }}/config'
+  environment:
+    RESTIC_REPOSITORY: '{{ restic_repo_dir }}'
+    RESTIC_PASSWORD: '{{ restic_repo_password }}'
+...
