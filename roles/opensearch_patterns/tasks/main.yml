@@ -9,6 +9,8 @@
     user: '{{ opensearch_patterns_user }}'
     password: '{{ opensearch_patterns_password }}'
     force_basic_auth: true
+  retries: 3
+  delay: 30
   register: opensearch_patterns_result
 
 - name: Add opensearch index patterns
