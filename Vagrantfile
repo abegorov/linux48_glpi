@@ -13,12 +13,12 @@ DEFAULT_MACHINE = {
 }
 
 MACHINES = {
-  :backup   => { :intnets => { :lan => { auto_config: false } } },
-  :primary  => { :intnets => { :lan => { auto_config: false } } },
-  :replica  => { :intnets => { :lan => { auto_config: false } } },
-  :nfs      => { :intnets => { :lan => { auto_config: false } } },
+  :backup   => { :intnets => { :lan => { :auto_config => false } } },
+  :primary  => { :intnets => { :lan => { :auto_config => false } } },
+  :replica  => { :intnets => { :lan => { :auto_config => false } } },
+  :nfs      => { :intnets => { :lan => { :auto_config => false } } },
   :backend1 => {
-    :intnets => { :lan => { auto_config: false } },
+    :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
       { :id => 'https', :guest_ip => '192.168.57.14', :guest => 443,
                         :host_ip  =>     '127.0.0.1', :host  => 8444 },
@@ -27,7 +27,7 @@ MACHINES = {
     ],
   },
   :backend2 => {
-    :intnets => { :lan => { auto_config: false } },
+    :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
       { :id => 'https', :guest_ip => '192.168.57.15', :guest => 443,
                         :host_ip  =>     '127.0.0.1', :host  => 8445 },
@@ -38,7 +38,7 @@ MACHINES = {
   :logs => {
     :cpus => 2,
     :memory => 4096,
-    :intnets => { :lan => { auto_config: false } },
+    :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
       { :id => 'kibana', :guest_ip => '192.168.57.16', :guest => 5601,
                          :host_ip  =>     '127.0.0.1', :host  => 5601 },
@@ -47,7 +47,7 @@ MACHINES = {
   :monitor => {
     :cpus => 2,
     :memory => 4096,
-    :intnets => { :lan => { auto_config: false } },
+    :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
       { :id => 'grafana', :guest_ip => '192.168.57.17', :guest => 3000,
                           :host_ip  =>     '127.0.0.1', :host  => 3000 },
@@ -58,8 +58,10 @@ MACHINES = {
     ],
   },
   :frontend => {
-    :intnets => { :lan => { auto_config: false } },
-    :networks => { :private_network => { auto_config: false } },
+    :intnets => { :lan => { :auto_config => false } },
+    :networks => {
+      :private_network => { :ip => '192.168.57.18', :auto_config => false }
+    },
     :forwarded_ports => [
       { :id => 'vts',   :guest_ip => '192.168.57.18', :guest => 9913,
                         :host_ip  =>     '127.0.0.1', :host  => 9900 },
