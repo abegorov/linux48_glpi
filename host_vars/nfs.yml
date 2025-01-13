@@ -14,6 +14,7 @@ nfs_exports_opts: rw,sync,insecure,no_subtree_check,no_root_squash
 nfs_exports_clients: >
   {{ hostvars["backend1"].ip }}
   {{ hostvars["backend2"].ip }}
+  {{ hostvars["backup"].ip }}
 nfs_server_exports_content: |
   /glpi -{{ nfs_exports_opts }} {{ nfs_exports_clients }}
 ...

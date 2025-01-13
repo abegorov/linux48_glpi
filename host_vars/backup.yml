@@ -6,4 +6,16 @@ ssh_known_hosts_list:
   - '{{ hostvars["primary"].ip }}'
   - '{{ hostvars["replica"].ip }}'
 ssh_known_hosts_users: [root]
+
+backup_nfs_src: /mnt/nfs/glpi
+
+nfs_automount_mount: '{{ backup_nfs_src }}'
+nfs_automount_host: '{{ hostvars["nfs"].ip }}'
+nfs_automount_path: /glpi
+
+backup_mariadb_name: primary
+backup_mariadb_host: '{{ hostvars["primary"].ip }}'
+
+restic_repo_password: '{{ lookup("ansible.builtin.password",
+  "secrets/restic_password.txt", length=26) }}'
 ...
