@@ -9,6 +9,7 @@
     routes4_extended: '{{ item.routes4_extended | default(omit) }}'
     routing_rules4: '{{ item.routing_rules4 | default(omit) }}'
     gw4_ignore_auto: '{{ item.gw4_ignore_auto | default(omit) }}'
+    zone: '{{ item.zone | default(omit) }}'
     type: ethernet
     state: present
   loop: '{{ nmcli_connections }}'

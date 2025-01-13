@@ -6,6 +6,7 @@ nmcli_connections_add:
   - conn_name: wan
     ifname: eth2
     ip4: '{{ ip_external }}/24'
+    zone: dmz
 
 firewalld_override:
   public:
