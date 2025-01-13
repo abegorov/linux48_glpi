@@ -29,7 +29,7 @@ mariadb_users_list:
   - name: '{{ mariadb_exporter_user }}'
     host: '127.0.0.1'
     password: '{{ mariadb_exporter_password }}'
-    priv: '*.*:PROCESS,BINLOG MONITOR,SELECT'
+    priv: '*.*:PROCESS,BINLOG MONITOR,REPLICA MONITOR,SELECT'
     resource_limits:
       MAX_USER_CONNECTIONS: 3
     tls_requires:
