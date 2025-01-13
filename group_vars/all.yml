@@ -82,7 +82,7 @@ node_exporter_cert: '{{ tls_full }}'
 node_exporter_key: '{{ tls_key }}'
 node_exporter_user: '{{ metrics_user }}'
 node_exporter_password_hash: '{{ metrics_password_hash }}'
-node_exporter_listenstreams: ['{{ prometheus_ip }}:9100']
+node_exporter_listen: ['{{ prometheus_ip }}:9100']
 
 grafana_db_user: grafana
 grafana_db_password: '{{ lookup("ansible.builtin.password",
