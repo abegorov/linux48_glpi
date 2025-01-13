@@ -43,7 +43,7 @@
   when: not node_exporter_is_installed.stat.exists
     or node_exporter_version not in
       node_exporter_current_version.stdout_lines | first
-  notify: Restart node_exporter service
+  notify: Restart service node_exporter
 
 - name: Create node_exporter config directory
   ansible.builtin.file:
@@ -61,7 +61,7 @@
     group: root
     mode: '0644'
   diff: false
-  notify: Restart node_exporter service
+  notify: Restart service node_exporter
 
 - name: Update node_exporter key file
   ansible.builtin.copy:
@@ -83,15 +83,6 @@
   no_log: '{{ not debug }}'
   notify: Restart service node_exporter
 
-- name: Install node_exporter systemd socket
-  ansible.builtin.template:
-    src: node_exporter.socket
-    dest: /etc/systemd/system/node_exporter.socket
-    owner: root
-    group: root
-    mode: '0644'
-  notify: Restart socket node_exporter
-
 - name: Install node_exporter systemd service
   ansible.builtin.template:
     src: node_exporter.service
@@ -100,14 +91,6 @@
     group: root
     mode: '0644'
   notify: Restart service node_exporter
-
-- name: Enable and start socket node_exporter
-  ansible.builtin.systemd:
-    name: node_exporter.socket
-    enabled: true
-    daemon_reload: true
-    state: started
-  ignore_errors: '{{ ansible_check_mode }}'
 
 - name: Enable and start service node_exporter
   ansible.builtin.systemd:

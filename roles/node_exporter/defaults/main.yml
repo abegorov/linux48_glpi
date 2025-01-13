@@ -9,7 +9,7 @@ node_exporter_certfile: /etc/node_exporter/server.crt
 node_exporter_key: '{{ undef(hint="node_exporter_key") }}'
 node_exporter_keyfile: /etc/node_exporter/server.key
 
-node_exporter_listenstreams: ['9100']
+node_exporter_listen: ['0.0.0.0:9100']
 
 node_exporter_user: metrics
 node_exporter_password_hash: '{{ undef(hint="node_exporter_password_hash") }}'

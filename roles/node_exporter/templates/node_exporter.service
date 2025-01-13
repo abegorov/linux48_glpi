@@ -1,13 +1,15 @@
 [Unit]
 Description=Node Exporter
-Requires=node_exporter.socket
+After=network-online.target
 
 [Service]
 Type=exec
 User=node_exporter
 Group=node_exporter
 ExecStart=/usr/local/bin/node_exporter \
-  --web.systemd-socket \
+  {% for listen in node_exporter_listen %}
+  --web.listen-address={{ listen }} \
+  {% endfor %}
   --web.config.file=/etc/node_exporter/web.yml
 TimeoutStopSec=20s
 SendSIGKILL=no
