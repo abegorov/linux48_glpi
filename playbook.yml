@@ -1,11 +1,18 @@
 ---
+- name: Configure network
+  tags: network
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - nmcli
+
 - name: Common provision
   tags: common
   hosts: all
   become: true
   gather_facts: false
   roles:
-    - nmcli
     - firewalld
     - tls_gen
     - trust_ca
