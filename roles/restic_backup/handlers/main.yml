@@ -1,0 +1,7 @@
+---
+- name: Restart timer restic backup
+  ansible.builtin.systemd_service:
+    name: restic-backup-{{ restic_backup_name }}.timer
+    state: restarted
+  ignore_errors: '{{ ansible_check_mode }}'
+...

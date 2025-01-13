@@ -48,6 +48,7 @@
     - ssh_known_hosts
     - nfs_automount
     - restic_repo
+    - restic_backup
     - backup_mariadb
 
 - name: DB provision

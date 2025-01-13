@@ -1,0 +1,8 @@
+---
+restic_backup_config_dir: /etc/restic
+restic_backup_repo: /srv/backup/restic
+restic_backup_password: '{{ undef(hint="restic_backup_password") }}'
+restic_backup_name: '{{ undef(hint="restic_backup_name") }}'
+restic_backup_sources: []
+restic_backup_schedule: '*-*-* 00:00:00'
+...

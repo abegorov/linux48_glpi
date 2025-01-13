@@ -1,0 +1,13 @@
+[Unit]
+Description=Restic Backup Service ({{ restic_backup_name }})
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+Environment=RESTIC_REPOSITORY={{ restic_backup_repo }}
+Environment=RESTIC_PASSWORD_FILE={{ restic_backup_config_dir
+  }}/{{ restic_backup_name }}
+ExecStart=/usr/bin/restic backup {%
+  for target in restic_backup_sources
+%}{{ target | ansible.builtin.quote }}{% endfor %}

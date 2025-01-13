@@ -1,0 +1,43 @@
+---
+- name: Create restic configuration directory
+  ansible.builtin.file:
+    path: '{{ restic_backup_config_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create restic password file
+  ansible.builtin.copy:
+    content: '{{ restic_backup_password }}'
+    dest: '{{ restic_backup_config_dir }}/{{ restic_backup_name }}'
+    owner: root
+    group: root
+    mode: '0640'
+  no_log: '{{ not debug }}'
+
+- name: Update restic backup service
+  ansible.builtin.template:
+    src: restic-backup.service
+    dest: /etc/systemd/system/restic-backup-{{ restic_backup_name }}.service
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update restic backup timer
+  ansible.builtin.template:
+    src: restic-backup.timer
+    dest: /etc/systemd/system/restic-backup-{{ restic_backup_name }}.timer
+    owner: root
+    group: root
+    mode: '0755'
+  notify: Restart timer restic backup
+
+- name: Enable and start timer restic backup
+  ansible.builtin.systemd_service:
+    name: restic-backup-{{ restic_backup_name }}.timer
+    daemon_reload: true
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+...
