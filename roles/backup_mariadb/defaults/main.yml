@@ -1,0 +1,7 @@
+---
+backup_mariadb_age: '+7'
+backup_mariadb_name: '{{ undef(hint="backup_mariadb_name") }}'
+backup_mariadb_user: root
+backup_mariadb_host: '{{ undef(hint="backup_mariadb_host") }}'
+backup_mariadb_schedule: '*-*-* 00:00:00'
+...

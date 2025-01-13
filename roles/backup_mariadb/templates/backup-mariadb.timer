@@ -1,0 +1,8 @@
+[Unit]
+Description=Backup MariaDB Timer ({{ backup_mariadb_name }})
+
+[Timer]
+OnCalendar={{ backup_mariadb_schedule }}
+
+[Install]
+WantedBy=timers.target

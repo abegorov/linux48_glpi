@@ -1,0 +1,8 @@
+[Unit]
+Description=Backup MariaDB Service ({{ backup_mariadb_name }})
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/usr/local/sbin/backup-mariadb-{{ backup_mariadb_name }}.sh

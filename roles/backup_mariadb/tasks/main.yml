@@ -1,0 +1,34 @@
+---
+- name: Update backup mariadb script
+  ansible.builtin.template:
+    src: backup-mariadb.sh
+    dest: '/usr/local/sbin/backup-mariadb-{{ backup_mariadb_name }}.sh'
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update backup mariadb service
+  ansible.builtin.template:
+    src: backup-mariadb.service
+    dest: /etc/systemd/system/backup-mariadb-{{ backup_mariadb_name }}.service
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Update backup mariadb timer
+  ansible.builtin.template:
+    src: backup-mariadb.timer
+    dest: /etc/systemd/system/backup-mariadb-{{ backup_mariadb_name }}.timer
+    owner: root
+    group: root
+    mode: '0755'
+  notify: Restart timer backup mariadb
+
+- name: Enable and start timer backup mariadb
+  ansible.builtin.systemd_service:
+    name: backup-mariadb-{{ backup_mariadb_name }}.timer
+    daemon_reload: true
+    enabled: true
+    state: started
+  ignore_errors: '{{ ansible_check_mode }}'
+...
