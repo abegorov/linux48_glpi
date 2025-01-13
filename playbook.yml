@@ -103,3 +103,11 @@
     - prometheus
     - grafana
     - grafana_dashboards
+
+- name: Start backup services
+  tags: backup
+  hosts: [backup]
+  become: true
+  gather_facts: false
+  roles:
+    - backup_start

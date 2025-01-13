@@ -21,4 +21,8 @@ restic_repo_password: '{{ lookup("ansible.builtin.password",
 restic_backup_password: '{{ restic_repo_password }}'
 restic_backup_name: nfs-glpi
 restic_backup_sources: ['{{ backup_nfs_src }}']
+
+backup_start_services:
+  - backup-mariadb-primary
+  - restic-backup-nfs-glpi
 ...
