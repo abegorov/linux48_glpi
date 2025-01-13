@@ -13,10 +13,14 @@ DEFAULT_MACHINE = {
 }
 
 MACHINES = {
-  :backup   => { :intnets => { :lan => { :auto_config => false } } },
+  :backup   => {
+    :intnets => { :lan => { :auto_config => false } }
+  },
   :primary  => { :intnets => { :lan => { :auto_config => false } } },
   :replica  => { :intnets => { :lan => { :auto_config => false } } },
-  :nfs      => { :intnets => { :lan => { :auto_config => false } } },
+  :nfs      => {
+    :intnets => { :lan => { :auto_config => false } }
+  },
   :backend1 => {
     :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
@@ -36,7 +40,6 @@ MACHINES = {
     ],
   },
   :logs => {
-    :cpus => 2,
     :memory => 4096,
     :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
@@ -45,8 +48,6 @@ MACHINES = {
     ],
   },
   :monitor => {
-    :cpus => 2,
-    :memory => 4096,
     :intnets => { :lan => { :auto_config => false } },
     :forwarded_ports => [
       { :id => 'grafana', :guest_ip => '192.168.57.17', :guest => 3000,
