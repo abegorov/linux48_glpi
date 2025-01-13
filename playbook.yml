@@ -46,6 +46,9 @@
   roles:
     - ssh_key
     - ssh_known_hosts
+    - nfs_automount
+    - restic_repo
+    - backup_mariadb
 
 - name: DB provision
   tags: db
