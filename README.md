@@ -193,7 +193,7 @@ replica.internal: Enforcing
 Проверим работу **grafana**:
 
 ![Nginx VTS](images/vts.png)
-![MySQL Exporter Quickstart and Dashboard](images/mariadb.png)
+![MySQL Exporter Quickstart and Dashboard](images/mysql.png)
 
 Проверим **backup**:
 
