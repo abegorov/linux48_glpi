@@ -1,0 +1,34 @@
+---
+- name: Get opensearch index patterns
+  ansible.builtin.uri:
+    url: "{{ opensearch_patterns_url }}/api/saved_objects/_find\
+      ?fields=title&type=index-pattern"
+    headers:
+      osd-xsrf: osd-fetch
+      securitytenant: Global
+    user: '{{ opensearch_patterns_user }}'
+    password: '{{ opensearch_patterns_password }}'
+    force_basic_auth: true
+  register: opensearch_patterns_result
+
+- name: Add opensearch index patterns
+  vars:
+    patterns: '{{ opensearch_patterns_result.json.saved_objects |
+      map(attribute="attributes.title") }}'
+  ansible.builtin.uri:
+    url: '{{ opensearch_patterns_url }}/api/saved_objects/index-pattern'
+    method: POST
+    headers:
+      Osd-Xsrf: 'true'
+      securitytenant: Global
+    user: '{{ opensearch_patterns_user }}'
+    password: '{{ opensearch_patterns_password }}'
+    force_basic_auth: true
+    body: '{{ lookup("ansible.builtin.file",
+      "/".join((role_path, "files", item + ".json"))) |
+      ansible.builtin.from_json }}'
+    body_format: json
+  changed_when: true
+  when: item + '-*' not in patterns
+  loop: '{{ opensearch_patterns_list }}'
+...

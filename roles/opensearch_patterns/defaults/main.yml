@@ -1,0 +1,7 @@
+---
+opensearch_patterns_url: https://127.0.0.1:5601
+opensearch_patterns_user: admin
+opensearch_patterns_password: '{{
+  undef(hint="opensearch_patterns_password") }}'
+opensearch_patterns_list: []
+...
